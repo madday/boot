@@ -16,6 +16,7 @@ import com.example.boot.util.StringUtil;
 public class TestController {
 	@Autowired
 	private TestService testService;
+	
 	private static final Logger logger = LoggerFactory.getLogger(TestController.class);
 	@GetMapping("/test")
 	public int test() {
@@ -25,6 +26,7 @@ public class TestController {
 		domain.setPk(pk);
 		domain.setName("zhang");
 		int result = testService.insert(domain);
+		
 		return result;
 	}
 }
