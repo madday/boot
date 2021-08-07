@@ -1,4 +1,4 @@
-package com.example.boot.util;
+package com.appz9001.boot.util;
 
 import java.util.UUID;
 

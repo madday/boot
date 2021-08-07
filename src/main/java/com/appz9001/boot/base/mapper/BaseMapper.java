@@ -1,4 +1,4 @@
-package com.example.boot.base.mapper;
+package com.appz9001.boot.base.mapper;
 
 import tk.mybatis.mapper.common.base.BaseInsertMapper;
 

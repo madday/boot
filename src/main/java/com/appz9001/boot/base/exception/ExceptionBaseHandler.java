@@ -1,4 +1,4 @@
-package com.example.boot.base.exception;
+package com.appz9001.boot.base.exception;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.example.boot.base.dto.ResultDto;
+import com.appz9001.boot.base.dto.ResultDto;
 
 @RestControllerAdvice
 public class ExceptionBaseHandler {

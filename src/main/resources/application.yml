@@ -1,7 +1,7 @@
 spring:
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://192.168.22.100:3306/boot
+        url: jdbc:mysql://118.195.179.140/appz9001
         username: root
         password: root
         type: com.zaxxer.hikari.HikariDataSource
@@ -9,18 +9,6 @@ spring:
         hikari:
             minimum-idle: 5
             maximum-pool-size: 20
-        
-    #mq配置
-    rabbitmq: 
-        host: 192.168.22.100
-        port: 5672
-        username: admin
-        password: admin
-        # 坑,设置publisher-confirms: true无效
-        publisher-confirm-type: correlated
-        #listener:
-            #simple:
-                #acknowledge-mode: manual
 mybatis:
     mapperLocations: classpath*:mapper/**/*Mapper.xml
     configuration:

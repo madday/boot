@@ -1,4 +1,4 @@
-package com.example.boot.base.dto;
+package com.appz9001.boot.base.dto;
 
 import java.io.Serializable;
 

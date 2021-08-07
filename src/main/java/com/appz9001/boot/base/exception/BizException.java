@@ -1,4 +1,4 @@
-package com.example.boot.base.exception;
+package com.appz9001.boot.base.exception;
 
 /**
  * 通用业务异常
