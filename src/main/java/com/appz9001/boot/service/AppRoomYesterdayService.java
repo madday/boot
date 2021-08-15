@@ -49,7 +49,6 @@ public class AppRoomYesterdayService {
             List<BillInfoDto> billInfoDto = appRoomYesterdayMapper.queryBill(params);
             yesterdayDto.setBillInfoDto(billInfoDto);
             logger.info("账单信息：{}",JSON.toJSONString(billInfoDto));
-
             //结算情况
             SettleBillDto settleBillDto = appRoomYesterdayMapper.querySettleBill(params);
             yesterdayDto.setSettleBillDto(settleBillDto);
