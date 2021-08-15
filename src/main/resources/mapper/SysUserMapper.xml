@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.appz9001.boot.mapper.SysUserMapper">
+    <resultMap id="BaseResultMap" type="com.appz9001.boot.domain.SysUser">
+        <id column="user_code" jdbcType="VARCHAR" property="userCode" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+    </resultMap>
+    <sql id="Base_Column_List">
+	    user_code,user_name,password
+    </sql>
+    <select id="checkUser" resultType="com.appz9001.boot.domain.SysUser">
+        select * from sys_user r
+        where r.user_code = #{userCode,jdbcType=VARCHAR}
+        and r.password = #{password,jdbcType=VARCHAR}
+    </select>
+</mapper>

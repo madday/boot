@@ -1,14 +1,12 @@
 spring:
     datasource:
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://118.195.179.140/appz9001
-        username: root
-        password: root
-        type: com.zaxxer.hikari.HikariDataSource
-        validation-query: SELECT 1 FROM DUAL
         hikari:
             minimum-idle: 5
             maximum-pool-size: 20
+            jdbc-url: jdbc:mysql://118.195.179.140/appz9001
+            driver-class-name: com.mysql.cj.jdbc.Driver
+            username: root
+            password: root
 mybatis:
     mapperLocations: classpath*:mapper/**/*Mapper.xml
     configuration:
@@ -16,4 +14,6 @@ mybatis:
 pagehelper:
     helperDialect: mysql
     reasonable: true
+server:
+    port: 8090
         

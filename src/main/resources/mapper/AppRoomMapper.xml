@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.appz9001.boot.mapper.AppRoomMapper">
+
+    <select id="queryRoomInfo" resultType="com.appz9001.boot.dto.RoomInfoDto">
+        select s.IS_TODAY_LEAVE,
+        s.CHECKIN_TIME,
+        s.HOUSING_SORT,
+        s.BOOK_DAYS,
+        s.CLEAR_STATUS,
+        s.USE_STATUS
+        from TQJD.V_DJ_ROOM_STATUS s
+    </select>
+
+    <select id="queryIncome" parameterType="map" statementType="CALLABLE" resultType="com.appz9001.boot.dto.IncomeDto">
+        {
+          call TQKF.USP_KF_REPORT_DAYSALE(
+                    #{date,mode=IN,jdbcType=VARCHAR}
+                    )
+        }
+    </select>
+
+    <!--当前入住率 -->
+    <select id="queryCurRentRate" resultType="com.appz9001.boot.dto.RentRateDto">
+        select sum(housing_num) rentNum, sum(can_sale) roomNum from TQKF.F_KF_ROOMSORT_STATIC() t where t.SORT='KF'
+    </select>
+
+    <select id="queryRoomStatus" resultType="com.appz9001.boot.dto.RoomStatusDto">
+            select  occu_statdate
+             ,sum(case when goods_id='GDRS000001' then quantity else 0 end) as c_nightcheck
+             ,sum(case when goods_id='GDRS000002' then quantity else 0 end) as c_mooning
+             ,sum(case when goods_id='GDRS000003' then quantity else 0 end) as c_nooning
+             ,sum(case when goods_id='GDRS000004' then quantity else 0 end) as c_evining
+             ,sum(case when goods_id='GDRS000005' then quantity else 0 end) as c_day
+             ,sum(case when goods_id='GDRS000006' then quantity else 0 end) as c_clock
+             ,sum(case when goods_id='GDRS000001' then disc_money else 0 end) as s_nightcheck
+             ,sum(case when goods_id='GDRS000002' then disc_money else 0 end) as s_mooning
+             ,sum(case when goods_id='GDRS000003' then disc_money else 0 end) as s_nooning
+             ,sum(case when goods_id='GDRS000004' then disc_money else 0 end) as s_evining
+             ,sum(case when goods_id='GDRS000005' then disc_money else 0 end) as s_day
+             ,sum(case when goods_id='GDRS000006' then disc_money else 0 end) as s_clock
+             ,sum(case when goods_id in ('GDRS000001','GDRS000002','GDRS000004','GDRS000005') then  quantity
+                when goods_id in ('GDRS000003') then 0.5*quantity
+                else 0 end)/room_count as rentRate
+             ,sum(case when goods_id like 'GDRS0%' then disc_money else 0 end) as s_all
+            from TQXY.T_XY_SALELIST,(select count(room_id) as room_count
+                from TQKF.T_KF_ROOM TM,TQKF.T_KF_ROOMSORT TRS
+                WHERE TM.ROOM_SORT_ID=TRS.ROOM_SORT_ID AND SORT='KF') as T
+            where occu_statdate between #{start,jdbcType=VARCHAR} and #{end,jdbcType=VARCHAR}
+            group by occu_statdate,room_count
+            order by OCCU_STATDATE
+    </select>
+
+    <select id="queryCheckInfo" resultType="com.appz9001.boot.dto.CheckInfoDto">
+        select
+        SUM(CASE WHEN IN_STATDATE =T.SDATE and STATUS not in ('-1','-2')  THEN 1 ELSE 0 END ) as checkIn ,
+        SUM(CASE WHEN OUT_STATDATE =T.SDATE and STATUS <![CDATA[ <> ]]> '-2' THEN 1 ELSE 0 END) as checkOut ,
+        SUM(CASE WHEN STATUS =0 THEN 1 ELSE 0 END ) as checkInAll ,
+        SUM(CASE WHEN STATUS =- 1 AND DATEDIFF(DAY , GETDATE() ,
+        CHECKIN_TIME) = 0 THEN 1 ELSE 0 END) as checkInPre
+        from TQJD.T_JD_ROOMREGISTER , TQSYS.F_SYS_STATDATE() T
+        where IN_STATDATE =T.SDATE OR OUT_STATDATE =T.SDATE OR STATUS in ( '-1' , '0')
+    </select>
+</mapper>
