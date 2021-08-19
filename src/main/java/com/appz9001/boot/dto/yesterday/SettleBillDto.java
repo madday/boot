@@ -2,8 +2,28 @@ package com.appz9001.boot.dto.yesterday;
 
 public class SettleBillDto {
     private String billCount;
-    private String zeroMoney;
-    private String invoice;
+    private Double zeroMoney = 0d;
+    private Double invoice = 0d;
+    private Double discMoney = 0d;
+
+    private Double fangfeiRetMoney = 0d;
+    private Double xiaofeiRetMoney = 0d;
+
+    public Double getFangfeiRetMoney() {
+        return fangfeiRetMoney;
+    }
+
+    public void setFangfeiRetMoney(Double fangfeiRetMoney) {
+        this.fangfeiRetMoney = fangfeiRetMoney;
+    }
+
+    public Double getXiaofeiRetMoney() {
+        return xiaofeiRetMoney;
+    }
+
+    public void setXiaofeiRetMoney(Double xiaofeiRetMoney) {
+        this.xiaofeiRetMoney = xiaofeiRetMoney;
+    }
 
     public String getBillCount() {
         return billCount;
@@ -13,19 +33,27 @@ public class SettleBillDto {
         this.billCount = billCount;
     }
 
-    public String getZeroMoney() {
+    public Double getZeroMoney() {
         return zeroMoney;
     }
 
-    public void setZeroMoney(String zeroMoney) {
+    public void setZeroMoney(Double zeroMoney) {
         this.zeroMoney = zeroMoney;
     }
 
-    public String getInvoice() {
+    public Double getInvoice() {
         return invoice;
     }
 
-    public void setInvoice(String invoice) {
+    public void setInvoice(Double invoice) {
         this.invoice = invoice;
+    }
+
+    public Double getDiscMoney() {
+        return discMoney;
+    }
+
+    public void setDiscMoney(Double discMoney) {
+        this.discMoney = discMoney;
     }
 }

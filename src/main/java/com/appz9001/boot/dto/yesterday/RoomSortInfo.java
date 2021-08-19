@@ -5,6 +5,11 @@ public class RoomSortInfo {
     private String guestSort;
 
     private String sort;
+    private Double cStart = 0d;
+    private Double cEnd = 0d;
+    private Double ci = 0d;
+    private Double co = 0d;
+    private Double ciSelf = 0d;
 
     public String getGuestSortId() {
         return guestSortId;
@@ -21,11 +26,6 @@ public class RoomSortInfo {
     public void setGuestSort(String guestSort) {
         this.guestSort = guestSort;
     }
-
-    private Double cStart = 0d;
-    private Double cEnd = 0d;
-    private Double ci = 0d;
-    private Double co = 0d;
 
     public Double getcStart() {
         return cStart;
@@ -65,5 +65,13 @@ public class RoomSortInfo {
 
     public void setSort(String sort) {
         this.sort = sort;
+    }
+
+    public Double getCiSelf() {
+        return ciSelf;
+    }
+
+    public void setCiSelf(Double ciSelf) {
+        this.ciSelf = ciSelf;
     }
 }

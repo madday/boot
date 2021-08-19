@@ -3,13 +3,11 @@ package com.appz9001.boot.service;
 import com.alibaba.fastjson.JSON;
 import com.appz9001.boot.base.DynamicDataSource;
 import com.appz9001.boot.dto.*;
-import com.appz9001.boot.dto.yesterday.BillInfoDto;
-import com.appz9001.boot.dto.yesterday.RoomSortInfo;
-import com.appz9001.boot.dto.yesterday.RoomYesterdayDto;
-import com.appz9001.boot.dto.yesterday.SettleBillDto;
+import com.appz9001.boot.dto.yesterday.*;
 import com.appz9001.boot.mapper.AppRoomMapper;
 import com.appz9001.boot.mapper.AppRoomYesterdayMapper;
 import com.appz9001.boot.util.DateUtil;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
+import java.lang.reflect.Member;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.DayOfWeek;
@@ -36,12 +35,13 @@ public class AppRoomYesterdayService {
 
     public RoomYesterdayDto queryRoomYesterday(String date,String userId){
         RoomYesterdayDto yesterdayDto = new RoomYesterdayDto();
-        String yesterday = DateUtil.getYesterday();
         userId = "1111";
         try{
             DataSource dataSource = dataSourceService.getDataSource(userId);
             DynamicDataSource.dataSourcesMap.put(userId, dataSource);
             DynamicDataSource.setDataSource(userId);
+
+            String yesterday = appRoomMapper.querySysDateBefore();
             Map<String,String> params = new HashMap<>();
             params.put("start",yesterday);
             params.put("end",yesterday);
@@ -51,6 +51,9 @@ public class AppRoomYesterdayService {
             logger.info("账单信息：{}",JSON.toJSONString(billInfoDto));
             //结算情况
             SettleBillDto settleBillDto = appRoomYesterdayMapper.querySettleBill(params);
+            if(settleBillDto==null){
+                settleBillDto = new SettleBillDto();
+            }
             yesterdayDto.setSettleBillDto(settleBillDto);
             logger.info("结算情况：{}",JSON.toJSONString(billInfoDto));
 
@@ -76,8 +79,49 @@ public class AppRoomYesterdayService {
                 totalSortInfo.setcEnd(totalSortInfo.getcEnd()+info.getcEnd());
                 totalSortInfo.setCi(totalSortInfo.getCi()+info.getCi());
                 totalSortInfo.setCo(totalSortInfo.getCo()+info.getCo());
+                totalSortInfo.setCiSelf(totalSortInfo.getCiSelf()+info.getCiSelf());
             }
             yesterdayDto.setTotalSortInfo(totalSortInfo);
+
+            List<RoomStatusDto> roomStatusDtoList = this.appRoomMapper.queryRoomStatus(params);
+            RoomStatusDto statusDto = new RoomStatusDto();
+            if(roomStatusDtoList!=null&&!roomStatusDtoList.isEmpty()){
+                statusDto = roomStatusDtoList.get(0);
+                Double rentRate = new BigDecimal(statusDto.getRentRate()).multiply(new BigDecimal("100")).doubleValue();
+                DecimalFormat df = new DecimalFormat("0.##");
+                String str = df.format(rentRate);
+                statusDto.setRentRate(str+"%");
+            }
+            logger.info(JSON.toJSONString(statusDto));
+            yesterdayDto.setRoomStatusDto(statusDto);
+
+            //获取会员信息
+            Long memCnt = appRoomYesterdayMapper.queryMemCnt(params);
+            MemberInfoDto memberInfoDto = new MemberInfoDto();
+            memberInfoDto.setMemNum(memCnt);
+
+            MemberInfoDto memDto = appRoomYesterdayMapper.queryMemInfo(params);
+            if(memDto!=null){
+                memberInfoDto.setMoney(memDto.getMoney());
+                memberInfoDto.setFreeMoney(memDto.getFreeMoney());
+            }
+
+            memDto = appRoomYesterdayMapper.queryMemConsum(params);
+            if(memDto!=null){
+               memberInfoDto.setConsumeMoney(memDto.getConsumeMoney());
+            }
+            // 查询退费金额
+            SettleBillDto retBillDto = appRoomYesterdayMapper.queryReturnMoney(params);
+            settleBillDto.setFangfeiRetMoney(retBillDto.getFangfeiRetMoney());
+            settleBillDto.setXiaofeiRetMoney(retBillDto.getXiaofeiRetMoney());
+
+            yesterdayDto.setMemberInfoDto(memberInfoDto);
+            CouponDto couponDto = appRoomYesterdayMapper.queryCoupon(params);
+            logger.info("优惠信息：{}", JSON.toJSONString(couponDto));
+            if(couponDto == null){
+                couponDto = new CouponDto();
+            }
+            yesterdayDto.setCouponDto(couponDto);
         }
         catch(Exception e){
             e.printStackTrace();

@@ -13,6 +13,43 @@ public class RoomInfoDto {
 
     private String useStatus;
 
+    private String roomId;
+    private String guestName;
+    private Double roomPrice;
+    private String roomSort;
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
+    }
+
+    public String getGuestName() {
+        return guestName;
+    }
+
+    public void setGuestName(String guestName) {
+        this.guestName = guestName;
+    }
+
+    public Double getRoomPrice() {
+        return roomPrice;
+    }
+
+    public void setRoomPrice(Double roomPrice) {
+        this.roomPrice = roomPrice;
+    }
+
+    public String getRoomSort() {
+        return roomSort;
+    }
+
+    public void setRoomSort(String roomSort) {
+        this.roomSort = roomSort;
+    }
+
     public String getIsTodayLeave() {
         return isTodayLeave;
     }

@@ -16,4 +16,8 @@ public interface AppRoomMapper {
     public List<RoomStatusDto> queryRoomStatus(Map<String,String> param);
 
     public CheckInfoDto queryCheckInfo();
+
+    public String querySysDate();
+
+    public String querySysDateBefore();
 }

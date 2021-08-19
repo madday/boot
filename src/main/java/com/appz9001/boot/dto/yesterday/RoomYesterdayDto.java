@@ -1,5 +1,7 @@
 package com.appz9001.boot.dto.yesterday;
 
+import com.appz9001.boot.dto.RoomStatusDto;
+
 import java.util.List;
 
 public class RoomYesterdayDto {
@@ -11,6 +13,12 @@ public class RoomYesterdayDto {
 
     private List<RoomSortInfo> bedSortList;
     private List<RoomSortInfo> cusSortList;
+
+    private RoomStatusDto roomStatusDto;
+
+    private MemberInfoDto memberInfoDto;
+
+    private CouponDto couponDto;
 
     public void setBillInfoList(List<BillInfoDto> billInfoList) {
         this.billInfoList = billInfoList;
@@ -64,5 +72,29 @@ public class RoomYesterdayDto {
 
     public void setRoomSortList(List<RoomSortInfo> roomSortList) {
         this.roomSortList = roomSortList;
+    }
+
+    public RoomStatusDto getRoomStatusDto() {
+        return roomStatusDto;
+    }
+
+    public void setRoomStatusDto(RoomStatusDto roomStatusDto) {
+        this.roomStatusDto = roomStatusDto;
+    }
+
+    public MemberInfoDto getMemberInfoDto() {
+        return memberInfoDto;
+    }
+
+    public void setMemberInfoDto(MemberInfoDto memberInfoDto) {
+        this.memberInfoDto = memberInfoDto;
+    }
+
+    public CouponDto getCouponDto() {
+        return couponDto;
+    }
+
+    public void setCouponDto(CouponDto couponDto) {
+        this.couponDto = couponDto;
     }
 }

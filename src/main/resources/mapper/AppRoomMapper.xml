@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.appz9001.boot.mapper.AppRoomMapper">
-
     <select id="queryRoomInfo" resultType="com.appz9001.boot.dto.RoomInfoDto">
-        select s.IS_TODAY_LEAVE,
+        select
+        s.IS_TODAY_LEAVE,
         s.CHECKIN_TIME,
         s.HOUSING_SORT,
         s.BOOK_DAYS,
         s.CLEAR_STATUS,
-        s.USE_STATUS
+        s.USE_STATUS,
+        s.ROOM_ID,
+        s.ROOM_SORT,
+        s.GUEST_NAME,
+        s.ROOM_PRICE
         from TQJD.V_DJ_ROOM_STATUS s
     </select>
 
@@ -61,4 +65,13 @@
         from TQJD.T_JD_ROOMREGISTER , TQSYS.F_SYS_STATDATE() T
         where IN_STATDATE =T.SDATE OR OUT_STATDATE =T.SDATE OR STATUS in ( '-1' , '0')
     </select>
+
+    <select id="querySysDate" resultType="java.lang.String">
+        select SDATE from tqsys.f_sys_statdate()
+    </select>
+
+    <select id="querySysDateBefore" resultType="java.lang.String">
+        select dateadd(day,-1,SDATE) SDATE from tqsys.f_sys_statdate()
+    </select>
+
 </mapper>

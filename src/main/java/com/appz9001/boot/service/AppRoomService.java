@@ -26,12 +26,14 @@ public class AppRoomService {
     @Autowired
     private AppRoomMapper appRoomMapper;
 
-    public HomeDto queryIncome(String date,String userId){
+    public HomeDto queryIncome(String userId){
         HomeDto homeDto = new HomeDto();
         try{
             DataSource dataSource = dataSourceService.getDataSource(userId);
             DynamicDataSource.dataSourcesMap.put(userId, dataSource);
             DynamicDataSource.setDataSource(userId);
+            String date = appRoomMapper.querySysDate();
+            logger.info("系统日期：{}",date);
             //收入
             IncomeDto incomeDto = this.buildIncomeInfo(date);
             homeDto.setIncomeDto(incomeDto);

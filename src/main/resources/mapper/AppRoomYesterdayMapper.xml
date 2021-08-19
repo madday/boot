@@ -16,6 +16,7 @@
         <result column="CO" jdbcType="VARCHAR" property="co" />
         <result column="C_START" jdbcType="VARCHAR" property="cStart" />
         <result column="C_END" jdbcType="VARCHAR" property="cEnd" />
+        <result column="CI_SELF" jdbcType="VARCHAR" property="ciSelf" />
     </resultMap>
     <select id="queryBill" parameterType="map" statementType="CALLABLE" resultMap="BillInfoResultMap">
         {
@@ -38,7 +39,44 @@
     <select id="querySettleBill"  parameterType="map" resultType="com.appz9001.boot.dto.yesterday.SettleBillDto">
         select count(bill_id)  as billCount
         ,sum(ZERO_MONEY) as zeroMoney
-        ,sum(INVOICE)  as invoice
-        from  TQXY.T_XY_BILL t where t.STARTDATE = #{start,mode=IN,jdbcType=VARCHAR}
+        ,sum(INVOICE)  as invoice,
+        sum(DISC_MONEY) as discMoney
+        from  TQXY.T_XY_BILL t where t.STATDATE = #{start,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryMemCnt"  parameterType="map" resultType="java.lang.Long">
+        select count(1) cnt FROM TQPOS.T_HY_MEMBER
+        WHERE  TQPOS.T_HY_MEMBER.STATUS not IN (-1,0)
+          and TQPOS.T_HY_MEMBER.SEND_DATE between #{start,jdbcType=VARCHAR} and #{end,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryMemInfo"  parameterType="map" resultType="com.appz9001.boot.dto.yesterday.MemberInfoDto">
+        SELECT  ISNULL(sum(MONEY) ,0) AS money, ISNULL(sum(FREE_MONEY) ,0) AS freeMoney
+        FROM TQPOS.T_HY_ACCOLIST
+        WHERE STATDATE between #{start,jdbcType=VARCHAR} and #{end,jdbcType=VARCHAR}  and INOUT =1 and oper_sort in( 1 ,4) and STATUS <![CDATA[ <> ]]> -1
+    </select>
+
+    <!-- 会员消费 -->
+    <select id="queryMemConsum"  parameterType="map" resultType="com.appz9001.boot.dto.yesterday.MemberInfoDto">
+        SELECT  ISNULL(sum(MONEY) ,0) AS consumeMoney
+        FROM TQPOS.T_HY_ACCOLIST
+        WHERE  STATDATE between #{start,jdbcType=VARCHAR} and #{end,jdbcType=VARCHAR}  and INOUT = -1 and oper_sort = -1 and STATUS <![CDATA[ <> ]]> -1
+    </select>
+
+    <select id="queryReturnMoney" parameterType="map" resultType="com.appz9001.boot.dto.yesterday.SettleBillDto">
+        SELECT ISNULL(SUM
+        ( CASE WHEN SALE_SORT_ID = '01' THEN DISC_MONEY_DIS ELSE 0 END ),0) AS fangfeiRetMoney,
+        ISNULL(SUM ( CASE WHEN SALE_SORT_ID <![CDATA[ <> ]]> '01' THEN DISC_MONEY_DIS ELSE 0 END ),0) AS xiaofeiRetMoney
+        FROM
+        TQPOS.T_POS_SALECHANGED_LOG
+        WHERE
+        OPER_STATDATE = #{start,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryCoupon" parameterType="map" resultType="com.appz9001.boot.dto.yesterday.CouponDto">
+        select  sum(case when PAY_MODE_ID='1006' then PAY_MONEY else 0 end) as payMoneyA,
+                sum(case when PAY_MODE_ID='1008' then PAY_MONEY else 0 end) as zhaodaiMoney,
+                sum(case when PAY_MODE_ID='0002' then PAY_MONEY else 0 end) as payMoneyC from TQXY.T_XY_PAYLIST
+        where  BILL_STATDATE = #{start,jdbcType=VARCHAR}
     </select>
 </mapper>
