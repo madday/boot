@@ -20,4 +20,6 @@ public interface AppRoomMapper {
     public String querySysDate();
 
     public String querySysDateBefore();
+
+    public Double querySaleMoney();
 }

@@ -6,19 +6,16 @@ import java.util.List;
 
 public class RoomYesterdayDto {
     private List<BillInfoDto> billInfoList;
-
     private SettleBillDto settleBillDto;
-
     private List<RoomSortInfo> roomSortList;
-
     private List<RoomSortInfo> bedSortList;
     private List<RoomSortInfo> cusSortList;
-
     private RoomStatusDto roomStatusDto;
-
     private MemberInfoDto memberInfoDto;
-
     private CouponDto couponDto;
+    private RoomSortInfo totalSortInfo;
+    private String sDate;
+    private String yesDate;
 
     public void setBillInfoList(List<BillInfoDto> billInfoList) {
         this.billInfoList = billInfoList;
@@ -47,8 +44,6 @@ public class RoomYesterdayDto {
     public void setTotalSortInfo(RoomSortInfo totalSortInfo) {
         this.totalSortInfo = totalSortInfo;
     }
-
-    private RoomSortInfo totalSortInfo;
 
     public List<BillInfoDto> getBillInfoList() {
         return billInfoList;
@@ -96,5 +91,21 @@ public class RoomYesterdayDto {
 
     public void setCouponDto(CouponDto couponDto) {
         this.couponDto = couponDto;
+    }
+
+    public String getsDate() {
+        return sDate;
+    }
+
+    public void setsDate(String sDate) {
+        this.sDate = sDate;
+    }
+
+    public String getYesDate() {
+        return yesDate;
+    }
+
+    public void setYesDate(String yesDate) {
+        this.yesDate = yesDate;
     }
 }

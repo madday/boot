@@ -3,25 +3,12 @@ package com.appz9001.boot.dto;
 import java.util.List;
 
 public class HomeDto {
-    public IncomeDto getIncomeDto() {
-        return incomeDto;
-    }
-
-    public void setIncomeDto(IncomeDto incomeDto) {
-        this.incomeDto = incomeDto;
-    }
-
-    public RentRateDto getRentRateDto() {
-        return rentRateDto;
-    }
-
-    public void setRentRateDto(RentRateDto rentRateDto) {
-        this.rentRateDto = rentRateDto;
-    }
-
     private IncomeDto incomeDto;
     private RentRateDto rentRateDto;
     private RoomSumInfo roomSumInfo;
+    private List<RoomStatusDto> weekRateList;
+    private List<String> weekList;
+    private WeekRateDto weekRateDto;
 
     public RoomSumInfo getRoomSumInfo() {
         return roomSumInfo;
@@ -30,10 +17,6 @@ public class HomeDto {
     public void setRoomSumInfo(RoomSumInfo roomSumInfo) {
         this.roomSumInfo = roomSumInfo;
     }
-
-    private List<RoomStatusDto> weekRateList;
-
-    private List<String> weekList;
 
     public List<RoomStatusDto> getWeekRateList() {
         return weekRateList;
@@ -59,5 +42,29 @@ public class HomeDto {
 
     public void setCheckInfoDto(CheckInfoDto checkInfoDto) {
         this.checkInfoDto = checkInfoDto;
+    }
+
+    public void setIncomeDto(IncomeDto incomeDto) {
+        this.incomeDto = incomeDto;
+    }
+
+    public RentRateDto getRentRateDto() {
+        return rentRateDto;
+    }
+
+    public void setRentRateDto(RentRateDto rentRateDto) {
+        this.rentRateDto = rentRateDto;
+    }
+
+    public IncomeDto getIncomeDto() {
+        return incomeDto;
+    }
+
+    public WeekRateDto getWeekRateDto() {
+        return weekRateDto;
+    }
+
+    public void setWeekRateDto(WeekRateDto weekRateDto) {
+        this.weekRateDto = weekRateDto;
     }
 }

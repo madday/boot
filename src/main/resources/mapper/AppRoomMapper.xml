@@ -12,7 +12,9 @@
         s.ROOM_ID,
         s.ROOM_SORT,
         s.GUEST_NAME,
-        s.ROOM_PRICE
+        s.ROOM_PRICE,
+        s.DISP_REMARK,
+		s.ROOM_PRICE_DISP
         from TQJD.V_DJ_ROOM_STATUS s
     </select>
 
@@ -72,6 +74,11 @@
 
     <select id="querySysDateBefore" resultType="java.lang.String">
         select dateadd(day,-1,SDATE) SDATE from tqsys.f_sys_statdate()
+    </select>
+
+    <!-- 账户总消费 -->
+    <select id="querySaleMoney" resultType="java.lang.Double">
+        select sum(sale_money) saleMoney from tqkf.V_KF_ACCOUNT_ACTIVE
     </select>
 
 </mapper>

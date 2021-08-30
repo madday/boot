@@ -8,6 +8,8 @@ import java.util.Map;
 public class RoomStatusPageDto {
     private RoomStatusSumDto roomStatusSumDto;
     private Map<String, List<RoomInfoDto>> roomMap;
+    private Double saleMoney;
+    private String rentRate;
 
     public RoomStatusSumDto getRoomStatusSumDto() {
         return roomStatusSumDto;
@@ -23,5 +25,21 @@ public class RoomStatusPageDto {
 
     public void setRoomMap(Map<String, List<RoomInfoDto>> roomMap) {
         this.roomMap = roomMap;
+    }
+
+    public Double getSaleMoney() {
+        return saleMoney;
+    }
+
+    public void setSaleMoney(Double saleMoney) {
+        this.saleMoney = saleMoney;
+    }
+
+    public String getRentRate() {
+        return rentRate;
+    }
+
+    public void setRentRate(String rentRate) {
+        this.rentRate = rentRate;
     }
 }

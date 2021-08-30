@@ -7,6 +7,7 @@ import com.appz9001.boot.dto.HomeDto;
 import com.appz9001.boot.dto.RoomInfoDto;
 import com.appz9001.boot.dto.RoomStatusDto;
 import com.appz9001.boot.dto.request.RoomStatusRequest;
+import com.appz9001.boot.dto.request.RoomYesterDayRequest;
 import com.appz9001.boot.dto.status.RoomStatusPageDto;
 import com.appz9001.boot.dto.yesterday.RoomYesterdayDto;
 import com.appz9001.boot.service.AppRoomService;
@@ -46,10 +47,9 @@ public class RoomController {
     }
 
     @PostMapping("/queryRoomYesterday")
-    public ResultDto queryRoomYesterday(@RequestBody BaseRequest request){
-        String date = DateUtil.getYesterday();
+    public ResultDto queryRoomYesterday(@RequestBody RoomYesterDayRequest request){
         ResultDto dto = new ResultDto();
-        RoomYesterdayDto yesterdayDto = roomYesterdayService.queryRoomYesterday(date,request.getUserid());
+        RoomYesterdayDto yesterdayDto = roomYesterdayService.queryRoomYesterday(request);
         dto.setData(yesterdayDto);
         return dto;
     }

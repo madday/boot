@@ -17,6 +17,8 @@ public class RoomInfoDto {
     private String guestName;
     private Double roomPrice;
     private String roomSort;
+    private String dispRemark;
+    private String roomPriceDisp;
 
     public String getRoomId() {
         return roomId;
@@ -96,5 +98,21 @@ public class RoomInfoDto {
 
     public void setUseStatus(String useStatus) {
         this.useStatus = useStatus;
+    }
+
+    public String getDispRemark() {
+        return dispRemark;
+    }
+
+    public void setDispRemark(String dispRemark) {
+        this.dispRemark = dispRemark;
+    }
+
+    public String getRoomPriceDisp() {
+        return roomPriceDisp;
+    }
+
+    public void setRoomPriceDisp(String roomPriceDisp) {
+        this.roomPriceDisp = roomPriceDisp;
     }
 }

@@ -3,6 +3,7 @@ package com.appz9001.boot.service;
 import com.alibaba.fastjson.JSON;
 import com.appz9001.boot.base.DynamicDataSource;
 import com.appz9001.boot.dto.*;
+import com.appz9001.boot.dto.request.RoomYesterDayRequest;
 import com.appz9001.boot.dto.yesterday.*;
 import com.appz9001.boot.mapper.AppRoomMapper;
 import com.appz9001.boot.mapper.AppRoomYesterdayMapper;
@@ -33,18 +34,22 @@ public class AppRoomYesterdayService {
     @Autowired
     private AppRoomYesterdayMapper appRoomYesterdayMapper;
 
-    public RoomYesterdayDto queryRoomYesterday(String date,String userId){
+    public RoomYesterdayDto queryRoomYesterday(RoomYesterDayRequest request){
         RoomYesterdayDto yesterdayDto = new RoomYesterdayDto();
-        userId = "1111";
+        String userId = request.getUserid();
+        String sdate = request.getSdate();
         try{
             DataSource dataSource = dataSourceService.getDataSource(userId);
             DynamicDataSource.dataSourcesMap.put(userId, dataSource);
             DynamicDataSource.setDataSource(userId);
 
-            String yesterday = appRoomMapper.querySysDateBefore();
+            String yesDate = appRoomMapper.querySysDateBefore();
+            if(StringUtils.isBlank(sdate)){
+                sdate = yesDate;
+            }
             Map<String,String> params = new HashMap<>();
-            params.put("start",yesterday);
-            params.put("end",yesterday);
+            params.put("start",sdate);
+            params.put("end",sdate);
             // 账单信息
             List<BillInfoDto> billInfoDto = appRoomYesterdayMapper.queryBill(params);
             yesterdayDto.setBillInfoDto(billInfoDto);
@@ -122,9 +127,16 @@ public class AppRoomYesterdayService {
                 couponDto = new CouponDto();
             }
             yesterdayDto.setCouponDto(couponDto);
+            if(sdate.length()>=10){
+                yesterdayDto.setsDate(sdate.substring(0,10));
+            }
+            else{
+                yesterdayDto.setsDate(sdate);
+            }
+            yesterdayDto.setYesDate(yesDate);
         }
         catch(Exception e){
-            e.printStackTrace();
+            logger.error("获取昨日信息失败",e);
         }
         finally {
             DynamicDataSource.clear();

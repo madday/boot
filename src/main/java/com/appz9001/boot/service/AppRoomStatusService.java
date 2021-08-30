@@ -43,8 +43,66 @@ public class AppRoomStatusService {
             RoomStatusSumDto roomStatusSumDto = new RoomStatusSumDto();
             if(roomList!=null&&roomList.size()>0){
                 for(RoomInfoDto roomInfoDto:roomList){
+                    // 空净
                     if("1".equals(request.getSort())){
-                        if("0".equals(roomInfoDto.getClearStatus())){
+                        if(StringUtils.isBlank(roomInfoDto.getHousingSort())){
+                            if("0".equals(roomInfoDto.getClearStatus())){
+                                if("0".equals(roomInfoDto.getUseStatus())){
+                                    retList.add(roomInfoDto);
+                                }
+                            }
+                        }
+                    }
+                    // 空脏
+                    else if("2".equals(request.getSort())){
+                        if(StringUtils.isBlank(roomInfoDto.getHousingSort())){
+                            if("1".equals(roomInfoDto.getClearStatus())){
+                                retList.add(roomInfoDto);
+                            }
+                        }
+                    }
+                    // 在住
+                    else if("3".equals(request.getSort())){
+                        if(StringUtils.isNotBlank(roomInfoDto.getHousingSort())){
+                            retList.add(roomInfoDto);
+                        }
+                    }
+                    // 住脏
+                    else if("4".equals(request.getSort())){
+                        if(StringUtils.isNotBlank(roomInfoDto.getHousingSort())){
+                            if("1".equals(roomInfoDto.getClearStatus())){
+                                retList.add(roomInfoDto);
+                            }
+                        }
+                    }
+                    // 空净
+                    else if("5".equals(request.getSort())){
+                        if(StringUtils.isNotBlank(roomInfoDto.getHousingSort())){
+                            if("0".equals(roomInfoDto.getClearStatus())){
+                                retList.add(roomInfoDto);
+                            }
+                        }
+                    }
+                    // 预订
+                    else if("6".equals(request.getSort())){
+                        if("0".equals(roomInfoDto.getBookDays())){
+                            retList.add(roomInfoDto);
+                        }
+                    }
+                    // 预离
+                    else if("7".equals(request.getSort())){
+                        if("1".equals(roomInfoDto.getIsTodayLeave())){
+                            retList.add(roomInfoDto);
+                        }
+                    } // 维修
+                    else if("8".equals(request.getSort())){
+                        if("1".equals(roomInfoDto.getUseStatus())){
+                            retList.add(roomInfoDto);
+                        }
+                    }
+                    // 备用
+                    else if("9".equals(request.getSort())){
+                        if("2".equals(roomInfoDto.getUseStatus())){
                             retList.add(roomInfoDto);
                         }
                     }
@@ -52,6 +110,7 @@ public class AppRoomStatusService {
                         retList.add(roomInfoDto);
                     }
                 }
+                // 总房间数
                 roomStatusSumDto.setAll(roomList.size());
                 for(RoomInfoDto roomInfoDto:retList) {
                     if (map.get(roomInfoDto.getRoomSort()) == null) {
@@ -65,12 +124,15 @@ public class AppRoomStatusService {
                 }
                 for(RoomInfoDto roomInfoDto:roomList){
                     // 空净
-                    if("0".equals(roomInfoDto.getClearStatus())){
-                        roomStatusSumDto.setEmptyClean(roomStatusSumDto.getEmptyClean()+1);
-                    }
-                    // 空脏
-                    else if("1".equals(roomInfoDto.getClearStatus())){
-                        roomStatusSumDto.setEmptyDirty(roomStatusSumDto.getEmptyDirty()+1);
+                    if(StringUtils.isBlank(roomInfoDto.getHousingSort())){
+                        if("0".equals(roomInfoDto.getClearStatus())){
+                            if("0".equals(roomInfoDto.getUseStatus())){
+                                roomStatusSumDto.setEmptyClean(roomStatusSumDto.getEmptyClean()+1);
+                            }
+                        }
+                        else if("1".equals(roomInfoDto.getClearStatus())){
+                            roomStatusSumDto.setEmptyDirty(roomStatusSumDto.getEmptyDirty()+1);
+                        }
                     }
                     if(StringUtils.isNotBlank(roomInfoDto.getHousingSort())){
                         roomStatusSumDto.setLiveIn(roomStatusSumDto.getLiveIn()+1);
@@ -106,6 +168,14 @@ public class AppRoomStatusService {
             }
             roomStatusPageDto.setRoomMap(map);
             roomStatusPageDto.setRoomStatusSumDto(roomStatusSumDto);
+
+            Double saleMoney = this.appRoomMapper.querySaleMoney();
+            roomStatusPageDto.setSaleMoney(saleMoney);
+            // 入住率
+            RentRateDto rentRateDto = appRoomMapper.queryCurRentRate();
+            DecimalFormat df = new DecimalFormat("0.##");
+            String rentRate = df.format((float)rentRateDto.getRentNum()*100/rentRateDto.getRoomNum());
+            roomStatusPageDto.setRentRate(rentRate);
         }
         catch(Exception e){
             logger.error("ERROR",e);

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.appz9001.boot.base.DynamicDataSource;
 import com.appz9001.boot.dto.*;
 import com.appz9001.boot.mapper.AppRoomMapper;
+import com.appz9001.boot.util.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
@@ -33,9 +35,10 @@ public class AppRoomService {
             DynamicDataSource.dataSourcesMap.put(userId, dataSource);
             DynamicDataSource.setDataSource(userId);
             String date = appRoomMapper.querySysDate();
+            String yesterday = appRoomMapper.querySysDateBefore();
             logger.info("系统日期：{}",date);
             //收入
-            IncomeDto incomeDto = this.buildIncomeInfo(date);
+            IncomeDto incomeDto = this.buildIncomeInfo(yesterday);
             homeDto.setIncomeDto(incomeDto);
             // 出租率
             RentRateDto rentRateDto = appRoomMapper.queryCurRentRate();
@@ -49,8 +52,8 @@ public class AppRoomService {
             homeDto.setRoomSumInfo(roomSumInfo);
             // 获取一星期七天的出租率
             logger.info("首页信息:{}",JSON.toJSONString(homeDto));
-            List<String> rateList = this.buildWeekRentRate();
-            homeDto.setWeekList(rateList);
+            WeekRateDto weekRateDto = this.buildWeekRentRate();
+            homeDto.setWeekRateDto(weekRateDto);
             //入住信息
             CheckInfoDto checkInfoDto = this.buildCheckInfo();
             homeDto.setCheckInfoDto(checkInfoDto);
@@ -125,8 +128,10 @@ public class AppRoomService {
             // 空房
             if(StringUtils.isBlank(roomInfoDto.getHousingSort())){
                 if("0".equals(roomInfoDto.getClearStatus())){
-                    // 空净
-                    roomSumInfo.setRoomClean(roomSumInfo.getRoomClean()+1);
+                    if("0".equals(roomInfoDto.getUseStatus())){
+                        // 空净
+                        roomSumInfo.setRoomClean(roomSumInfo.getRoomClean()+1);
+                    }
                 }
                 if("1".equals(roomInfoDto.getClearStatus())){
                     // 空脏
@@ -145,15 +150,13 @@ public class AppRoomService {
         return roomSumInfo;
     }
 
-    private List<String> buildWeekRentRate(){
-        //获取周一到周日
-        LocalDate listDays = LocalDate.now();
-        List weekList = Arrays.asList(DayOfWeek.values()).stream().map(listDays::with).collect(Collectors.toList());
-        String start = weekList.get(0).toString();
-        String end = weekList.get(weekList.size()-1).toString();
+    private WeekRateDto buildWeekRentRate(){
+        String end = this.appRoomMapper.querySysDateBefore();
+        String endStr = end.substring(0,10);
+        String start = DateUtil.dateBefore(endStr,-6);
         Map<String,String> param = new HashMap<>();
-        param.put("start","2021-07-10");
-        param.put("end","2021-07-16");
+        param.put("start",start);
+        param.put("end",end);
         List<RoomStatusDto> rateList = this.appRoomMapper.queryRoomStatus(param);
         List<String> weekRList = new ArrayList<>();
         for(RoomStatusDto dto:rateList){
@@ -164,6 +167,9 @@ public class AppRoomService {
             weekRList.add(str);
         }
         logger.info(JSON.toJSONString(weekRList));
-        return weekRList;
+        WeekRateDto weekRateDto = new WeekRateDto();
+        weekRateDto.setDataList(weekRList);
+        weekRateDto.setWeekList(DateUtil.getWeekList());
+        return weekRateDto;
     }
 }
