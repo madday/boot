@@ -5,9 +5,14 @@
         <id column="user_code" jdbcType="VARCHAR" property="userCode" />
         <result column="user_name" jdbcType="VARCHAR" property="userName" />
         <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+        <result column="hotel_name" jdbcType="VARCHAR" property="hotelName" />
+        <result column="ds_id" jdbcType="VARCHAR" property="dsId" />
+        <result column="manager" jdbcType="VARCHAR" property="manager" />
+        <result column="stas" jdbcType="VARCHAR" property="stas" />
     </resultMap>
     <sql id="Base_Column_List">
-	    user_code,user_name,password
+	    user_code,user_name,password,mobile,hotel_name,ds_id,manager,stas
     </sql>
     <select id="checkUser" resultType="com.appz9001.boot.domain.SysUser">
         select * from sys_user r

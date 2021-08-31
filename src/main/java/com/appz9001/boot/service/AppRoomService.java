@@ -2,6 +2,7 @@ package com.appz9001.boot.service;
 
 import com.alibaba.fastjson.JSON;
 import com.appz9001.boot.base.DynamicDataSource;
+import com.appz9001.boot.base.dto.BaseRequest;
 import com.appz9001.boot.dto.*;
 import com.appz9001.boot.mapper.AppRoomMapper;
 import com.appz9001.boot.util.DateUtil;
@@ -52,8 +53,8 @@ public class AppRoomService {
             homeDto.setRoomSumInfo(roomSumInfo);
             // 获取一星期七天的出租率
             logger.info("首页信息:{}",JSON.toJSONString(homeDto));
-            WeekRateDto weekRateDto = this.buildWeekRentRate();
-            homeDto.setWeekRateDto(weekRateDto);
+//            WeekRateDto weekRateDto = this.buildWeekRentRate();
+//            homeDto.setWeekRateDto(weekRateDto);
             //入住信息
             CheckInfoDto checkInfoDto = this.buildCheckInfo();
             homeDto.setCheckInfoDto(checkInfoDto);
@@ -156,7 +157,7 @@ public class AppRoomService {
         String start = DateUtil.dateBefore(endStr,-6);
         Map<String,String> param = new HashMap<>();
         param.put("start",start);
-        param.put("end",end);
+        param.put("end",endStr);
         List<RoomStatusDto> rateList = this.appRoomMapper.queryRoomStatus(param);
         List<String> weekRList = new ArrayList<>();
         for(RoomStatusDto dto:rateList){
@@ -170,6 +171,24 @@ public class AppRoomService {
         WeekRateDto weekRateDto = new WeekRateDto();
         weekRateDto.setDataList(weekRList);
         weekRateDto.setWeekList(DateUtil.getWeekList());
+        return weekRateDto;
+    }
+
+    public WeekRateDto queryWeekInfo(BaseRequest request) {
+        String userId = request.getUserid();
+        WeekRateDto weekRateDto = new WeekRateDto();
+        try{
+            DataSource dataSource = dataSourceService.getDataSource(userId);
+            DynamicDataSource.dataSourcesMap.put(userId, dataSource);
+            DynamicDataSource.setDataSource(userId);
+            weekRateDto = this.buildWeekRentRate();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            DynamicDataSource.clear();
+        }
         return weekRateDto;
     }
 }

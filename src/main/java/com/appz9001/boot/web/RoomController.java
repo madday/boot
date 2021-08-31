@@ -6,6 +6,7 @@ import com.appz9001.boot.base.dto.ResultDto;
 import com.appz9001.boot.dto.HomeDto;
 import com.appz9001.boot.dto.RoomInfoDto;
 import com.appz9001.boot.dto.RoomStatusDto;
+import com.appz9001.boot.dto.WeekRateDto;
 import com.appz9001.boot.dto.request.RoomStatusRequest;
 import com.appz9001.boot.dto.request.RoomYesterDayRequest;
 import com.appz9001.boot.dto.status.RoomStatusPageDto;
@@ -43,6 +44,14 @@ public class RoomController {
         ResultDto dto = new ResultDto();
         HomeDto homeDto = roomService.queryIncome(request.getUserid());
         dto.setData(homeDto);
+        return dto;
+    }
+
+    @PostMapping("/queryWeekInfo")
+    public ResultDto<WeekRateDto> queryWeekInfo(@RequestBody BaseRequest request){
+        ResultDto<WeekRateDto> dto = new ResultDto<>();
+        WeekRateDto weekRateDto = roomService.queryWeekInfo(request);
+        dto.setData(weekRateDto);
         return dto;
     }
 

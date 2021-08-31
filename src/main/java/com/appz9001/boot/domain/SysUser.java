@@ -26,6 +26,61 @@ public class SysUser implements Serializable{
 	@Column(name = "password")
 	private String password;
 
+	@Column(name = "mobile")
+	private String mobile;
+
+	@Column(name = "hotel_name")
+	private String hotelName;
+
+	@Column(name = "manager")
+	private String manager;
+
+	@Column(name = "stas")
+	private String stas;
+
+	@Column(name = "ds_id")
+	private String dsId;
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public String getHotelName() {
+		return hotelName;
+	}
+
+	public void setHotelName(String hotelName) {
+		this.hotelName = hotelName;
+	}
+
+	public String getManager() {
+		return manager;
+	}
+
+	public void setManager(String manager) {
+		this.manager = manager;
+	}
+
+	public String getStas() {
+		return stas;
+	}
+
+	public void setStas(String stas) {
+		this.stas = stas;
+	}
+
+	public String getDsId() {
+		return dsId;
+	}
+
+	public void setDsId(String dsId) {
+		this.dsId = dsId;
+	}
+
 	public String getUserCode() {
 		return userCode;
 	}

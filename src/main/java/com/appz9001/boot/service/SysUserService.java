@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.appz9001.boot.mapper.SysUserMapper;
 
 import java.sql.Connection;
+import java.util.List;
 
 @Service
 public class SysUserService {
@@ -21,14 +22,8 @@ public class SysUserService {
 		return this.sysUserMapper.insert(domain);
 	}
 
-	public void userList() throws Exception{
-		String url = "jdbc:mysql://118.195.179.140/appz9001";
-		String user = "root";
-		String password = "root";
-		Connection connection = DBUtil.getConnection(url,user,password);
-		String sql = "select count(1) cnt from sys_user";
-		long count = DBUtil.getCount(connection,sql);
-		logger.info("数量：{}", count);
+	public List userAll() throws Exception{
+		return sysUserMapper.selectAll();
 	}
 
 	public SysUser checkUser(String userCode,String password){

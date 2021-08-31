@@ -36,7 +36,7 @@
 			<!--按大小分割同一天的 -->
 			<timeBasedFileNamingAndTriggeringPolicy
 				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-				<maxFileSize>10MB</maxFileSize>
+				<maxFileSize>100MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
 			<totalSizeCap>2GB</totalSizeCap>
 		</rollingPolicy>

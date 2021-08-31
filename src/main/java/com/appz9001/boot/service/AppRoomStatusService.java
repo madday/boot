@@ -7,6 +7,7 @@ import com.appz9001.boot.dto.request.RoomStatusRequest;
 import com.appz9001.boot.dto.status.RoomStatusPageDto;
 import com.appz9001.boot.dto.status.RoomStatusSumDto;
 import com.appz9001.boot.mapper.AppRoomMapper;
+import com.appz9001.boot.util.FormatUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -170,7 +171,7 @@ public class AppRoomStatusService {
             roomStatusPageDto.setRoomStatusSumDto(roomStatusSumDto);
 
             Double saleMoney = this.appRoomMapper.querySaleMoney();
-            roomStatusPageDto.setSaleMoney(saleMoney);
+            roomStatusPageDto.setSaleMoney(FormatUtil.formatCurrencyNoDot(saleMoney));
             // 入住率
             RentRateDto rentRateDto = appRoomMapper.queryCurRentRate();
             DecimalFormat df = new DecimalFormat("0.##");

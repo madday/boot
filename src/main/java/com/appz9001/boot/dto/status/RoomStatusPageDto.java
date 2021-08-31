@@ -8,7 +8,7 @@ import java.util.Map;
 public class RoomStatusPageDto {
     private RoomStatusSumDto roomStatusSumDto;
     private Map<String, List<RoomInfoDto>> roomMap;
-    private Double saleMoney;
+    private String saleMoney;
     private String rentRate;
 
     public RoomStatusSumDto getRoomStatusSumDto() {
@@ -27,11 +27,11 @@ public class RoomStatusPageDto {
         this.roomMap = roomMap;
     }
 
-    public Double getSaleMoney() {
+    public String getSaleMoney() {
         return saleMoney;
     }
 
-    public void setSaleMoney(Double saleMoney) {
+    public void setSaleMoney(String saleMoney) {
         this.saleMoney = saleMoney;
     }
 
