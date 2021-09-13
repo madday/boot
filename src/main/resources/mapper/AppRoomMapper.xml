@@ -81,4 +81,19 @@
         select sum(sale_money) saleMoney from tqkf.V_KF_ACCOUNT_ACTIVE
     </select>
 
+    <!-- 当前账户一览 -->
+    <select id="queryRoomAccount" resultType="com.appz9001.boot.dto.account.RoomAccountDto">
+        select
+          acco_sort,
+          acco_name,
+          checkin_time,
+          checkout_time,
+          room_price_disp,
+          prepay,
+          sale_money,
+          banlance,
+          group_short
+          from tqkf.V_KF_ACCOUNT_ACTIVE e order by e.acco_sort
+    </select>
+
 </mapper>

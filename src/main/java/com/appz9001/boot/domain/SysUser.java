@@ -2,10 +2,7 @@ package com.appz9001.boot.domain;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="sys_user")
@@ -40,6 +37,15 @@ public class SysUser implements Serializable{
 
 	@Column(name = "ds_id")
 	private String dsId;
+
+	@Column(name = "start_date")
+	private String startDate;
+
+	@Column(name = "end_date")
+	private String endDate;
+
+	@Transient
+	private String stasName;
 
 	public String getMobile() {
 		return mobile;
@@ -103,5 +109,29 @@ public class SysUser implements Serializable{
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getStasName() {
+		return stasName;
+	}
+
+	public void setStasName(String stasName) {
+		this.stasName = stasName;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
 	}
 }

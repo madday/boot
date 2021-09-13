@@ -7,6 +7,24 @@ spring:
             driver-class-name: com.mysql.cj.jdbc.Driver
             username: root
             password: root
+    security:
+        oauth2:
+            client:
+                client-id: client
+                client-secret: secret
+                access-token-uri: http://localhost:8090/oauth/token
+                check-token-access: http://localhost:8090/oauth/check_token
+    redis:
+        database: 0
+        host: 118.195.179.140
+        port: 6379
+        jedis:
+            pool:
+                max-active: 8
+                max-idle: 8
+                min-idle: 0
+        timeout: 10000
+
 mybatis:
     mapperLocations: classpath*:mapper/**/*Mapper.xml
     configuration:
@@ -16,4 +34,3 @@ pagehelper:
     reasonable: true
 server:
     port: 8090
-        

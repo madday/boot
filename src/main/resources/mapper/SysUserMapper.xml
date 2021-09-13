@@ -9,14 +9,25 @@
         <result column="hotel_name" jdbcType="VARCHAR" property="hotelName" />
         <result column="ds_id" jdbcType="VARCHAR" property="dsId" />
         <result column="manager" jdbcType="VARCHAR" property="manager" />
+        <result column="start_date" jdbcType="VARCHAR" property="startDate" />
+        <result column="end_date" jdbcType="VARCHAR" property="endDate" />
         <result column="stas" jdbcType="VARCHAR" property="stas" />
     </resultMap>
     <sql id="Base_Column_List">
-	    user_code,user_name,password,mobile,hotel_name,ds_id,manager,stas
+	    user_code,user_name,password,mobile,hotel_name,ds_id,manager,stas,start_date,end_date
     </sql>
     <select id="checkUser" resultType="com.appz9001.boot.domain.SysUser">
-        select * from sys_user r
+        select
+        <include refid="Base_Column_List"></include>
+        from sys_user r
         where r.user_code = #{userCode,jdbcType=VARCHAR}
         and r.password = #{password,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getUserByCode" resultType="com.appz9001.boot.domain.SysUser">
+        select
+        <include refid="Base_Column_List"></include>
+        from sys_user r
+        where r.user_code = #{userCode,jdbcType=VARCHAR}
     </select>
 </mapper>

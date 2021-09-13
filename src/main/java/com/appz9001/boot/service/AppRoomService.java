@@ -6,10 +6,12 @@ import com.appz9001.boot.base.dto.BaseRequest;
 import com.appz9001.boot.dto.*;
 import com.appz9001.boot.mapper.AppRoomMapper;
 import com.appz9001.boot.util.DateUtil;
+import com.appz9001.boot.util.UserUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
@@ -19,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @Service
@@ -174,8 +177,9 @@ public class AppRoomService {
         return weekRateDto;
     }
 
-    public WeekRateDto queryWeekInfo(BaseRequest request) {
-        String userId = request.getUserid();
+    public WeekRateDto queryWeekInfo(BaseRequest request) throws Exception {
+        UserDetails user = UserUtil.getSysUser();
+        String userId = user.getUsername();
         WeekRateDto weekRateDto = new WeekRateDto();
         try{
             DataSource dataSource = dataSourceService.getDataSource(userId);

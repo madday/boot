@@ -5,10 +5,7 @@ import com.appz9001.boot.base.dto.ResultDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.appz9001.boot.domain.SysUser;
 import com.appz9001.boot.service.SysUserService;
@@ -21,31 +18,22 @@ import java.util.List;
 public class SysUserController {
 	@Autowired
 	private SysUserService sysUserService;
-
-	private int id = 100;
-	
 	private static final Logger logger = LoggerFactory.getLogger(SysUserController.class);
-	@GetMapping("/add")
-	public int add() {
-		SysUser domain = new SysUser();
-		domain.setUserCode(StringUtil.getUUID());
-		domain.setUserName("zhang");
-		domain.setPassword("password");
-		int result = sysUserService.insert(domain);
-		
-		return result;
+
+	@PostMapping("/add")
+	public ResultDto<Integer> add(@RequestBody SysUser sysUser) {
+		ResultDto<Integer> resultDto = new ResultDto<Integer>();
+		int result = sysUserService.insert(sysUser);
+		resultDto.setData(result);
+		return resultDto;
 	}
 
-	@GetMapping("/login")
-	public ResultDto login(String userCode,String password) {
-		ResultDto<String> dto = new ResultDto<>();
-		logger.info(userCode+":"+password);
-		SysUser sysUser = this.sysUserService.checkUser(userCode,password);
-		if(sysUser == null){
-			dto.setCode("1");
-		}
-		dto.setData(userCode);
-		return dto;
+	@GetMapping("/delete")
+	public ResultDto<Integer> add(String userCode) {
+		ResultDto<Integer> resultDto = new ResultDto<Integer>();
+		int result = sysUserService.deleteUser(userCode);
+		resultDto.setData(result);
+		return resultDto;
 	}
 
 	@PostMapping("/list")

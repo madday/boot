@@ -1,6 +1,7 @@
 package com.appz9001.boot.mapper;
 
 import com.appz9001.boot.dto.*;
+import com.appz9001.boot.dto.account.RoomAccountDto;
 
 import java.util.List;
 import java.util.Map;
@@ -22,4 +23,6 @@ public interface AppRoomMapper {
     public String querySysDateBefore();
 
     public Double querySaleMoney();
+
+    public List<RoomAccountDto> queryRoomAccount();
 }

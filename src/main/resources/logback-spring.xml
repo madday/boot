@@ -53,6 +53,7 @@
 	</appender>
 	<logger name="org.springframework" level="info"/>
 	<logger name="com.appz9001.boot.mapper" level="debug"/>
+	<logger name="com.base.oauth" level="debug"/>
 	<!--指定基础的日志输出级别 -->
 	<root level="INFO">
 		<!--appender将会添加到这个loger -->

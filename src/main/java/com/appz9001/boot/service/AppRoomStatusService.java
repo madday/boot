@@ -8,10 +8,12 @@ import com.appz9001.boot.dto.status.RoomStatusPageDto;
 import com.appz9001.boot.dto.status.RoomStatusSumDto;
 import com.appz9001.boot.mapper.AppRoomMapper;
 import com.appz9001.boot.util.FormatUtil;
+import com.appz9001.boot.util.UserUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
@@ -30,12 +32,13 @@ public class AppRoomStatusService {
     @Autowired
     private AppRoomMapper appRoomMapper;
 
-    public RoomStatusPageDto queryRoomStatus(RoomStatusRequest request){
+    public RoomStatusPageDto queryRoomStatus(RoomStatusRequest request) throws Exception{
         RoomStatusPageDto roomStatusPageDto = new RoomStatusPageDto();
         Map<String,List<RoomInfoDto>> map = new HashMap<>();
+        UserDetails user = UserUtil.getSysUser();
+        String userId = user.getUsername();
         try{
-            String userId = request.getUserid();
-            DataSource dataSource = dataSourceService.getDataSource(request.getUserid());
+            DataSource dataSource = dataSourceService.getDataSource(userId);
             DynamicDataSource.dataSourcesMap.put(userId, dataSource);
             DynamicDataSource.setDataSource(userId);
             List<RoomInfoDto> roomList = appRoomMapper.queryRoomInfo();

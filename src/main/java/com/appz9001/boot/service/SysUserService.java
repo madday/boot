@@ -19,14 +19,34 @@ public class SysUserService {
 	private static final Logger logger = LoggerFactory.getLogger(SysUserService.class);
 	
 	public Integer insert(SysUser domain) {
+		domain.setDsId(domain.getUserCode());
+		// 有效
+		domain.setStas("1");
 		return this.sysUserMapper.insert(domain);
 	}
 
 	public List userAll() throws Exception{
-		return sysUserMapper.selectAll();
+		List<SysUser> userList = sysUserMapper.selectAll();
+		for(SysUser sysUser:userList){
+			if("1".equals(sysUser.getStas())){
+				sysUser.setStasName("正常");
+			}
+			else{
+				sysUser.setStasName("停用");
+			}
+		}
+		return userList;
 	}
 
 	public SysUser checkUser(String userCode,String password){
 		return this.sysUserMapper.checkUser(userCode,password);
 	}
+
+	public SysUser getUserByCode(String userCode){
+		return this.sysUserMapper.getUserByCode(userCode);
+	}
+
+    public int deleteUser(String userCode) {
+		return this.sysUserMapper.deleteByPrimaryKey(userCode);
+    }
 }

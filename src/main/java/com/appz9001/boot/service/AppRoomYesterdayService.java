@@ -8,16 +8,21 @@ import com.appz9001.boot.dto.yesterday.*;
 import com.appz9001.boot.mapper.AppRoomMapper;
 import com.appz9001.boot.mapper.AppRoomYesterdayMapper;
 import com.appz9001.boot.util.DateUtil;
+import com.appz9001.boot.util.UserUtil;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.lang.reflect.Member;
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.text.DecimalFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -34,9 +39,10 @@ public class AppRoomYesterdayService {
     @Autowired
     private AppRoomYesterdayMapper appRoomYesterdayMapper;
 
-    public RoomYesterdayDto queryRoomYesterday(RoomYesterDayRequest request){
+    public RoomYesterdayDto queryRoomYesterday(RoomYesterDayRequest request) throws Exception{
+        UserDetails user = UserUtil.getSysUser();
+        String userId = user.getUsername();
         RoomYesterdayDto yesterdayDto = new RoomYesterdayDto();
-        String userId = request.getUserid();
         String sdate = request.getSdate();
         try{
             DataSource dataSource = dataSourceService.getDataSource(userId);
