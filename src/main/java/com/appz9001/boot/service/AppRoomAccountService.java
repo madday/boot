@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -33,6 +34,10 @@ public class AppRoomAccountService {
             DynamicDataSource.dataSourcesMap.put(userId, dataSource);
             DynamicDataSource.setDataSource(userId);
             List<RoomAccountDto> roomAccountList = this.appRoomMapper.queryRoomAccount();
+            RoomAccountDto accountSum = new RoomAccountDto();
+            accountSum.setPrepay(new BigDecimal("0"));
+            accountSum.setSaleMoney(new BigDecimal("0"));
+            accountSum.setBanlance(new BigDecimal("0"));
             for(RoomAccountDto roomDto : roomAccountList){
                 if(sortMap.containsKey(roomDto.getAccoSort())){
                     sortMap.get(roomDto.getAccoSort()).add(roomDto);
@@ -41,8 +46,18 @@ public class AppRoomAccountService {
                     sortMap.put(roomDto.getAccoSort(), new ArrayList<>());
                     sortMap.get(roomDto.getAccoSort()).add(roomDto);
                 }
+                if(roomDto.getPrepay()!=null){
+                    accountSum.setPrepay(accountSum.getPrepay().add(roomDto.getPrepay()));
+                }
+                if(roomDto.getSaleMoney()!=null){
+                    accountSum.setSaleMoney(accountSum.getSaleMoney().add(roomDto.getSaleMoney()));
+                }
+                if(roomDto.getBanlance()!=null){
+                    accountSum.setBanlance(accountSum.getBanlance().add(roomDto.getBanlance()));
+                }
             }
             roomAccountRespDto.setRoomAccountDtoList(sortMap);
+            roomAccountRespDto.setAccountSum(accountSum);
         }
         catch(Exception e){
             logger.error("ERROR",e);

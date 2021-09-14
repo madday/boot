@@ -86,12 +86,12 @@
         select
           acco_sort,
           acco_name,
-          checkin_time,
-          checkout_time,
+          substring(convert(varchar(100),checkin_time,120),3,14) as checkin_time,
+          substring(convert(varchar(100),checkout_time,120),3,14) as checkout_time,
           room_price_disp,
           prepay,
           sale_money,
-          banlance,
+          banlance*(-1) as banlance,
           group_short
           from tqkf.V_KF_ACCOUNT_ACTIVE e order by e.acco_sort
     </select>

@@ -17,6 +17,7 @@ public class RoomYesterdayDto {
     private String sDate;
     private String yesDate;
 
+
     public void setBillInfoList(List<BillInfoDto> billInfoList) {
         this.billInfoList = billInfoList;
     }

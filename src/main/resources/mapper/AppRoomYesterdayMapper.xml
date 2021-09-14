@@ -2,12 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.appz9001.boot.mapper.AppRoomYesterdayMapper">
     <resultMap id="BillInfoResultMap" type="com.appz9001.boot.dto.yesterday.BillInfoDto">
-        <id column="SALE_SORT_ID" jdbcType="VARCHAR" property="saleSortId" />
-        <id column="SALE_SORT" jdbcType="VARCHAR" property="saleSort" />
+        <id column="ITEM" jdbcType="VARCHAR" property="saleSortId" />
+        <id column="SORT" jdbcType="VARCHAR" property="sort" />
+        <id column="ITEM" jdbcType="VARCHAR" property="saleSort" />
         <result column="_START" jdbcType="VARCHAR" property="start" />
         <result column="_END" jdbcType="VARCHAR" property="end" />
-        <result column="_OCCU" jdbcType="VARCHAR" property="occu" />
+        <result column="_OCCUR" jdbcType="VARCHAR" property="occu" />
         <result column="_SETTLE" jdbcType="VARCHAR" property="settle" />
+        <result column="DEP" jdbcType="VARCHAR" property="dep" />
     </resultMap>
     <resultMap id="RoomSortResultMap" type="com.appz9001.boot.dto.yesterday.RoomSortInfo">
         <id column="GUEST_SORT_ID" jdbcType="VARCHAR" property="guestSortId" />
@@ -20,7 +22,7 @@
     </resultMap>
     <select id="queryBill" parameterType="map" statementType="CALLABLE" resultMap="BillInfoResultMap">
         {
-            call TQKF.USP_KF_REPORT_INCOME_BETWEEN(
+            call TQKF.USP_KF_REPORT_BALANCE(
                 #{start,mode=IN,jdbcType=VARCHAR},
                 #{end,mode=IN,jdbcType=VARCHAR}
                 )

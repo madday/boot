@@ -1,14 +1,52 @@
 package com.appz9001.boot.dto.yesterday;
 
-public class BillInfoDto {
+import java.math.BigDecimal;
 
+public class BillInfoDto {
+    private String sort;
     private String saleSortId;
     private String saleSort;
-    private String start;
-    private String end;
-    private String occu;
-    private String settle;
+    private BigDecimal start;
+    private String startShow;
+    private BigDecimal end;
+    private String endShow;
+    private BigDecimal occu;
+    private String occuShow;
+    private BigDecimal settle;
+    private String settleShow;
+    private String dep;
 
+    public String getStartShow() {
+        return startShow;
+    }
+
+    public void setStartShow(String startShow) {
+        this.startShow = startShow;
+    }
+
+    public String getEndShow() {
+        return endShow;
+    }
+
+    public void setEndShow(String endShow) {
+        this.endShow = endShow;
+    }
+
+    public String getOccuShow() {
+        return occuShow;
+    }
+
+    public void setOccuShow(String occuShow) {
+        this.occuShow = occuShow;
+    }
+
+    public String getSettleShow() {
+        return settleShow;
+    }
+
+    public void setSettleShow(String settleShow) {
+        this.settleShow = settleShow;
+    }
 
     public String getSaleSortId() {
         return saleSortId;
@@ -18,35 +56,35 @@ public class BillInfoDto {
         this.saleSortId = saleSortId;
     }
 
-    public String getStart() {
+    public BigDecimal getStart() {
         return start;
     }
 
-    public void setStart(String start) {
+    public void setStart(BigDecimal start) {
         this.start = start;
     }
 
-    public String getEnd() {
+    public BigDecimal getEnd() {
         return end;
     }
 
-    public void setEnd(String end) {
+    public void setEnd(BigDecimal end) {
         this.end = end;
     }
 
-    public String getOccu() {
+    public BigDecimal getOccu() {
         return occu;
     }
 
-    public void setOccu(String occu) {
+    public void setOccu(BigDecimal occu) {
         this.occu = occu;
     }
 
-    public String getSettle() {
+    public BigDecimal getSettle() {
         return settle;
     }
 
-    public void setSettle(String settle) {
+    public void setSettle(BigDecimal settle) {
         this.settle = settle;
     }
 
@@ -56,5 +94,21 @@ public class BillInfoDto {
 
     public void setSaleSort(String saleSort) {
         this.saleSort = saleSort;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
+
+    public String getDep() {
+        return dep;
+    }
+
+    public void setDep(String dep) {
+        this.dep = dep;
     }
 }

@@ -1,5 +1,7 @@
 package com.appz9001.boot.dto.account;
 
+import java.math.BigDecimal;
+
 public class RoomAccountDto {
     private String accountId;
     private String accoName;
@@ -7,9 +9,9 @@ public class RoomAccountDto {
     private String checkinTime;
     private String checkoutTime;
     private String roomPriceDisp;
-    private String prepay;
-    private String saleMoney;
-    private String banlance;
+    private BigDecimal prepay;
+    private BigDecimal saleMoney;
+    private BigDecimal banlance;
     private String groupShort;
 
     public String getAccoName() {
@@ -52,27 +54,27 @@ public class RoomAccountDto {
         this.roomPriceDisp = roomPriceDisp;
     }
 
-    public String getPrepay() {
+    public BigDecimal getPrepay() {
         return prepay;
     }
 
-    public void setPrepay(String prepay) {
+    public void setPrepay(BigDecimal prepay) {
         this.prepay = prepay;
     }
 
-    public String getSaleMoney() {
+    public BigDecimal getSaleMoney() {
         return saleMoney;
     }
 
-    public void setSaleMoney(String saleMoney) {
+    public void setSaleMoney(BigDecimal saleMoney) {
         this.saleMoney = saleMoney;
     }
 
-    public String getBanlance() {
+    public BigDecimal getBanlance() {
         return banlance;
     }
 
-    public void setBanlance(String banlance) {
+    public void setBanlance(BigDecimal banlance) {
         this.banlance = banlance;
     }
 
