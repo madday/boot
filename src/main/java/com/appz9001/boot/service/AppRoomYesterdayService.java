@@ -62,25 +62,25 @@ public class AppRoomYesterdayService {
 
             List<BillInfoDto> retList = dealBillList(billInfoDtoList);
             for(BillInfoDto dto:retList){
-                if(dto.getStart()==null||dto.getStart().equals("0.00")){
+                if(dto.getStart()==null||dto.getStart().compareTo(new BigDecimal("0.0"))==0){
                     dto.setStartShow("--");
                 }
                 else{
                     dto.setStartShow(dto.getStart().toPlainString());
                 }
-                if(dto.getEnd()==null||dto.getEnd().equals("0.00")){
+                if(dto.getEnd()==null||dto.getEnd().compareTo(new BigDecimal("0.0"))==0){
                     dto.setEndShow("--");
                 }
                 else{
                     dto.setEndShow(dto.getEnd().toPlainString());
                 }
-                if(dto.getOccu()==null||dto.getOccu().equals("0.00")){
+                if(dto.getOccu()==null||dto.getOccu().compareTo(new BigDecimal("0.0"))==0){
                     dto.setOccuShow("--");
                 }
                 else{
                     dto.setOccuShow(dto.getOccu().toPlainString());
                 }
-                if(dto.getSettle()==null||dto.getSettle().equals("0.00")){
+                if(dto.getSettle()==null||dto.getSettle().compareTo(new BigDecimal("0.0"))==0){
                     dto.setSettleShow("--");
                 }
                 else{
@@ -179,6 +179,11 @@ public class AppRoomYesterdayService {
         return yesterdayDto;
     }
 
+    /**
+     * 处理账单信息
+     * @param billInfoDtoList
+     * @return
+     */
     private List<BillInfoDto> dealBillList(List<BillInfoDto> billInfoDtoList) {
         Map<String,List<BillInfoDto>> depMap = new LinkedHashMap<>();
         List<BillInfoDto> retList = new ArrayList<>();
@@ -196,22 +201,24 @@ public class AppRoomYesterdayService {
                 depMap.put(billInfoDto.getDep(),new ArrayList<>());
             }
             if("0".equals(billInfoDto.getSort())){
+                billInfo0.setStart(billInfo0.getStart().add(billInfoDto.getStart()));
                 billInfo0.setEnd(billInfo0.getEnd().add(billInfoDto.getEnd()));
                 billInfo0.setSettle(billInfo0.getSettle().add(billInfoDto.getSettle()));
                 billInfo0.setOccu(billInfo0.getOccu().add(billInfoDto.getOccu()));
             }
             else if("1".equals(billInfoDto.getSort())){
+                billInfo1.setStart(billInfo1.getStart().add(billInfoDto.getStart()));
                 billInfo1.setEnd(billInfo1.getEnd().add(billInfoDto.getEnd()));
                 billInfo1.setSettle(billInfo1.getSettle().add(billInfoDto.getSettle()));
                 billInfo1.setOccu(billInfo1.getOccu().add(billInfoDto.getOccu()));
             }
             else if("5".equals(billInfoDto.getSort())){
+                billInfo5.setStart(billInfo5.getStart().add(billInfoDto.getStart()));
                 billInfo5.setEnd(billInfo5.getEnd().add(billInfoDto.getEnd()));
                 billInfo5.setSettle(billInfo5.getSettle().add(billInfoDto.getSettle()));
                 billInfo5.setOccu(billInfo5.getOccu().add(billInfoDto.getOccu()));
             }
         }
-        logger.info(JSON.toJSONString(depMap));
         for(String key : depMap.keySet()){
             BillInfoDto depSum = new BillInfoDto();
             initBillInfo(depSum);
@@ -223,12 +230,16 @@ public class AppRoomYesterdayService {
                     depSum.setEnd(depSum.getEnd().add(billInfoDto.getEnd()));
                     depSum.setSettle(depSum.getSettle().add(billInfoDto.getSettle()));
                     depSum.setOccu(depSum.getOccu().add(billInfoDto.getOccu()));
+                    depSum.setType("1");
                 }
             }
             depMap.get(key).add(0,depSum);
         }
         for(String key : depMap.keySet()){
             retList.addAll(depMap.get(key));
+            BillInfoDto billInfoDto = new BillInfoDto();
+            billInfoDto.setType("3");
+            retList.add(billInfoDto);
         }
         return retList;
     }
@@ -238,5 +249,6 @@ public class AppRoomYesterdayService {
         billInfoDto.setEnd(new BigDecimal("0"));
         billInfoDto.setSettle(new BigDecimal("0"));
         billInfoDto.setOccu(new BigDecimal("0"));
+        billInfoDto.setType("2");
     }
 }
