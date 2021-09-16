@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 请求授权
         http.authorizeRequests()
                 //不需要权限认证的url
-                .antMatchers("/oauth/**").permitAll()
+                .antMatchers("/oauth/**","/sysuser/**").permitAll()
                 //需要认证
                 .anyRequest().authenticated();
         http.formLogin().permitAll();

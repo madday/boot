@@ -89,7 +89,7 @@ public class AppRoomService {
             incomeDto.setMonthMoney(dto.getMonthMoney()+incomeDto.getMonthMoney());
             incomeDto.setYearMoney(dto.getYearMoney()+incomeDto.getYearMoney());
         }
-        DecimalFormat decimalFormat = new DecimalFormat("###,##0.00");
+        DecimalFormat decimalFormat = new DecimalFormat("###,##0");
         logger.info("营业收入信息:{}", JSON.toJSONString(incomeDto));
         incomeDto.setDayIncome(decimalFormat.format(incomeDto.getDayMoney()));
         incomeDto.setMonthIncome(decimalFormat.format(incomeDto.getMonthMoney()));

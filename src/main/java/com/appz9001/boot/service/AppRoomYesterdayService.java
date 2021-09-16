@@ -62,6 +62,9 @@ public class AppRoomYesterdayService {
 
             List<BillInfoDto> retList = dealBillList(billInfoDtoList);
             for(BillInfoDto dto:retList){
+                if("1".equals(dto.getType())){
+                    continue;
+                }
                 if(dto.getStart()==null||dto.getStart().compareTo(new BigDecimal("0.0"))==0){
                     dto.setStartShow("--");
                 }
@@ -226,10 +229,10 @@ public class AppRoomYesterdayService {
                 if(billInfoDto.getDep().equals(key)){
                     depMap.get(key).add(billInfoDto);
                     depSum.setSaleSort(key);
-                    depSum.setStart(depSum.getStart().add(billInfoDto.getStart()));
-                    depSum.setEnd(depSum.getEnd().add(billInfoDto.getEnd()));
-                    depSum.setSettle(depSum.getSettle().add(billInfoDto.getSettle()));
-                    depSum.setOccu(depSum.getOccu().add(billInfoDto.getOccu()));
+//                    depSum.setStart(depSum.getStart().add(billInfoDto.getStart()));
+//                    depSum.setEnd(depSum.getEnd().add(billInfoDto.getEnd()));
+//                    depSum.setSettle(depSum.getSettle().add(billInfoDto.getSettle()));
+//                    depSum.setOccu(depSum.getOccu().add(billInfoDto.getOccu()));
                     depSum.setType("1");
                 }
             }
@@ -237,9 +240,9 @@ public class AppRoomYesterdayService {
         }
         for(String key : depMap.keySet()){
             retList.addAll(depMap.get(key));
-            BillInfoDto billInfoDto = new BillInfoDto();
-            billInfoDto.setType("3");
-            retList.add(billInfoDto);
+//            BillInfoDto billInfoDto = new BillInfoDto();
+//            billInfoDto.setType("3");
+//            retList.add(billInfoDto);
         }
         return retList;
     }

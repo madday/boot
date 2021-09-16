@@ -39,6 +39,7 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers("/sysuser/**").permitAll()
                 .antMatchers("/**").authenticated();
     }
 

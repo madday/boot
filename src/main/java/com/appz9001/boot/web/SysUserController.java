@@ -2,6 +2,8 @@ package com.appz9001.boot.web;
 
 import com.alibaba.fastjson.JSON;
 import com.appz9001.boot.base.dto.ResultDto;
+import com.appz9001.boot.dto.sysuser.ModifyPassReqDto;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +38,30 @@ public class SysUserController {
 		return resultDto;
 	}
 
+	@PostMapping("/modifyPass")
+	public ResultDto<Integer> modifyPass(@RequestBody ModifyPassReqDto reqDto) {
+		ResultDto<Integer> resultDto = new ResultDto<Integer>();
+		if(StringUtils.isBlank(reqDto.getUsercode())){
+			resultDto.setCode("9");
+			resultDto.setMessage("账号为空");
+			return resultDto;
+		}
+		if(StringUtils.isBlank(reqDto.getPassword1())
+				||StringUtils.isBlank(reqDto.getPassword2())){
+			resultDto.setCode("9");
+			resultDto.setMessage("新密码为空");
+			return resultDto;
+		}
+		if(!reqDto.getPassword1().equals(reqDto.getPassword2())){
+			resultDto.setCode("9");
+			resultDto.setMessage("新密码不一致");
+			return resultDto;
+		}
+		return sysUserService.modifyPass(reqDto);
+	}
+
 	@PostMapping("/list")
 	public List userList() throws Exception{
-		List list = sysUserService.userAll();
-		logger.info(JSON.toJSONString(list));
-		return list;
+		return sysUserService.userAll();
 	}
 }
