@@ -9,6 +9,7 @@
         <result column="_END" jdbcType="VARCHAR" property="end" />
         <result column="_OCCUR" jdbcType="VARCHAR" property="occu" />
         <result column="_SETTLE" jdbcType="VARCHAR" property="settle" />
+        <result column="_ADJUST" jdbcType="NUMERIC" property="adjust" />
         <result column="DEP" jdbcType="VARCHAR" property="dep" />
     </resultMap>
     <resultMap id="RoomSortResultMap" type="com.appz9001.boot.dto.yesterday.RoomSortInfo">

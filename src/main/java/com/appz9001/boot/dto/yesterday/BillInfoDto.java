@@ -14,6 +14,7 @@ public class BillInfoDto {
     private String occuShow;
     private BigDecimal settle;
     private String settleShow;
+    private BigDecimal adjust;
     private String dep;
     // 1汇总，2明细,3空白
     private String type;
@@ -120,5 +121,13 @@ public class BillInfoDto {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public BigDecimal getAdjust() {
+        return adjust;
+    }
+
+    public void setAdjust(BigDecimal adjust) {
+        this.adjust = adjust;
     }
 }

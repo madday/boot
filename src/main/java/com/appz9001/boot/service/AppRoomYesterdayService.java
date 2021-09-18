@@ -8,6 +8,7 @@ import com.appz9001.boot.dto.yesterday.*;
 import com.appz9001.boot.mapper.AppRoomMapper;
 import com.appz9001.boot.mapper.AppRoomYesterdayMapper;
 import com.appz9001.boot.util.DateUtil;
+import com.appz9001.boot.util.MathUtil;
 import com.appz9001.boot.util.UserUtil;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import io.lettuce.core.GeoArgs;
@@ -59,37 +60,9 @@ public class AppRoomYesterdayService {
             params.put("end",sdate);
             // 账单信息
             List<BillInfoDto> billInfoDtoList = appRoomYesterdayMapper.queryBill(params);
-
+            logger.info("账单信息，处理前：{}",JSON.toJSONString(billInfoDtoList));
             List<BillInfoDto> retList = dealBillList(billInfoDtoList);
-            for(BillInfoDto dto:retList){
-                if("1".equals(dto.getType())){
-                    continue;
-                }
-                if(dto.getStart()==null||dto.getStart().compareTo(new BigDecimal("0.0"))==0){
-                    dto.setStartShow("--");
-                }
-                else{
-                    dto.setStartShow(dto.getStart().toPlainString());
-                }
-                if(dto.getEnd()==null||dto.getEnd().compareTo(new BigDecimal("0.0"))==0){
-                    dto.setEndShow("--");
-                }
-                else{
-                    dto.setEndShow(dto.getEnd().toPlainString());
-                }
-                if(dto.getOccu()==null||dto.getOccu().compareTo(new BigDecimal("0.0"))==0){
-                    dto.setOccuShow("--");
-                }
-                else{
-                    dto.setOccuShow(dto.getOccu().toPlainString());
-                }
-                if(dto.getSettle()==null||dto.getSettle().compareTo(new BigDecimal("0.0"))==0){
-                    dto.setSettleShow("--");
-                }
-                else{
-                    dto.setSettleShow(dto.getSettle().toPlainString());
-                }
-            }
+            setBilShow(retList);
             yesterdayDto.setBillInfoDto(retList);
             logger.info("账单信息：{}",JSON.toJSONString(retList));
             //结算情况
@@ -135,7 +108,6 @@ public class AppRoomYesterdayService {
                 String str = df.format(rentRate);
                 statusDto.setRentRate(str+"%");
             }
-            logger.info(JSON.toJSONString(statusDto));
             yesterdayDto.setRoomStatusDto(statusDto);
 
             //获取会员信息
@@ -183,70 +155,133 @@ public class AppRoomYesterdayService {
     }
 
     /**
+     * 设置页面的显示信息
+     * @param billInfoDtoList
+     */
+    private void setBilShow(List<BillInfoDto> billInfoDtoList) {
+        for(BillInfoDto dto:billInfoDtoList){
+            if(MathUtil.isZero(dto.getStart())){
+                dto.setStartShow("--");
+            }
+            else{
+                dto.setStartShow(dto.getStart().toPlainString());
+            }
+            if(MathUtil.isZero(dto.getEnd())){
+                dto.setEndShow("--");
+            }
+            else{
+                dto.setEndShow(dto.getEnd().toPlainString());
+            }
+            if(MathUtil.isZero(dto.getOccu())){
+                dto.setOccuShow("--");
+            }
+            else{
+                dto.setOccuShow(dto.getOccu().toPlainString());
+            }
+            if(MathUtil.isZero(dto.getSettle())){
+                dto.setSettleShow("--");
+            }
+            else{
+                dto.setSettleShow(dto.getSettle().toPlainString());
+            }
+        }
+    }
+
+    /**
      * 处理账单信息
      * @param billInfoDtoList
      * @return
      */
     private List<BillInfoDto> dealBillList(List<BillInfoDto> billInfoDtoList) {
-        Map<String,List<BillInfoDto>> depMap = new LinkedHashMap<>();
+        // 处理完返回的数据
         List<BillInfoDto> retList = new ArrayList<>();
+        // sort->[dep1,dep2]
+        Map<String,Set<String>> sortMap = new LinkedHashMap<>();
+        // dep->[bill]
+        Map<String,List<BillInfoDto>> depMap = new LinkedHashMap<>();
 
+        for(BillInfoDto billInfoDto:billInfoDtoList){
+            if(!sortMap.containsKey(billInfoDto.getSort())){
+                Set<String> depSet = new LinkedHashSet<>();
+                depSet.add(billInfoDto.getDep());
+                sortMap.put(billInfoDto.getSort(),depSet);
+            }
+            else{
+                sortMap.get(billInfoDto.getSort()).add(billInfoDto.getDep());
+            }
+        }
         BillInfoDto billInfo0 = new BillInfoDto();
         BillInfoDto billInfo1 = new BillInfoDto();
         BillInfoDto billInfo5 = new BillInfoDto();
-
         initBillInfo(billInfo0);
         initBillInfo(billInfo1);
         initBillInfo(billInfo5);
-
         for(BillInfoDto billInfoDto:billInfoDtoList){
             if(!depMap.containsKey(billInfoDto.getDep())){
                 depMap.put(billInfoDto.getDep(),new ArrayList<>());
             }
             if("0".equals(billInfoDto.getSort())){
+                billInfo0.setSaleSort("合计");
                 billInfo0.setStart(billInfo0.getStart().add(billInfoDto.getStart()));
                 billInfo0.setEnd(billInfo0.getEnd().add(billInfoDto.getEnd()));
                 billInfo0.setSettle(billInfo0.getSettle().add(billInfoDto.getSettle()));
                 billInfo0.setOccu(billInfo0.getOccu().add(billInfoDto.getOccu()));
+                billInfo0.setType("3");
             }
             else if("1".equals(billInfoDto.getSort())){
+                billInfo1.setSaleSort("合计");
                 billInfo1.setStart(billInfo1.getStart().add(billInfoDto.getStart()));
                 billInfo1.setEnd(billInfo1.getEnd().add(billInfoDto.getEnd()));
                 billInfo1.setSettle(billInfo1.getSettle().add(billInfoDto.getSettle()));
                 billInfo1.setOccu(billInfo1.getOccu().add(billInfoDto.getOccu()));
+                billInfo1.setType("3");
             }
             else if("5".equals(billInfoDto.getSort())){
+                billInfo5.setSaleSort("合计");
                 billInfo5.setStart(billInfo5.getStart().add(billInfoDto.getStart()));
                 billInfo5.setEnd(billInfo5.getEnd().add(billInfoDto.getEnd()));
                 billInfo5.setSettle(billInfo5.getSettle().add(billInfoDto.getSettle()));
                 billInfo5.setOccu(billInfo5.getOccu().add(billInfoDto.getOccu()));
+                billInfo5.setType("3");
             }
         }
-        for(String key : depMap.keySet()){
-            BillInfoDto depSum = new BillInfoDto();
-            initBillInfo(depSum);
-            for(BillInfoDto billInfoDto:billInfoDtoList){
-                if(billInfoDto.getDep().equals(key)){
-                    depMap.get(key).add(billInfoDto);
-                    depSum.setSaleSort(key);
-//                    depSum.setStart(depSum.getStart().add(billInfoDto.getStart()));
-//                    depSum.setEnd(depSum.getEnd().add(billInfoDto.getEnd()));
-//                    depSum.setSettle(depSum.getSettle().add(billInfoDto.getSettle()));
-//                    depSum.setOccu(depSum.getOccu().add(billInfoDto.getOccu()));
-                    depSum.setType("1");
+
+        for(String sortKey : sortMap.keySet()){
+            if("0".equals(sortKey)){
+                retList.add(billInfo0);
+            }
+            else if("1".equals(sortKey)){
+                retList.add(billInfo1);
+            }
+            else if("5".equals(sortKey)){
+                retList.add(billInfo5);
+            }
+            Set<String> sortSet = sortMap.get(sortKey);
+            for(String key : sortSet){
+                BillInfoDto depSum = new BillInfoDto();
+                initBillInfo(depSum);
+                for(BillInfoDto billInfoDto:billInfoDtoList){
+                    if(billInfoDto.getDep().equals(key)){
+                        depMap.get(key).add(billInfoDto);
+                        depSum.setStart(depSum.getStart().add(billInfoDto.getStart()));
+                        depSum.setEnd(depSum.getEnd().add(billInfoDto.getEnd()));
+                        depSum.setSettle(depSum.getSettle().add(billInfoDto.getSettle()));
+                        depSum.setOccu(depSum.getOccu().add(billInfoDto.getOccu()));
+                        depSum.setSaleSort(key);
+                        depSum.setType("1");
+                    }
                 }
+                depMap.get(key).add(0,depSum);
+                retList.addAll(depMap.get(key));
             }
-            depMap.get(key).add(0,depSum);
-        }
-        for(String key : depMap.keySet()){
-            retList.addAll(depMap.get(key));
-//            BillInfoDto billInfoDto = new BillInfoDto();
-//            billInfoDto.setType("3");
-//            retList.add(billInfoDto);
         }
         return retList;
     }
 
+    /**
+     * 初始化账单信息
+     * @param billInfoDto
+     */
     private void initBillInfo(BillInfoDto billInfoDto) {
         billInfoDto.setStart(new BigDecimal("0"));
         billInfoDto.setEnd(new BigDecimal("0"));

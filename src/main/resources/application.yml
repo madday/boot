@@ -18,13 +18,6 @@ spring:
         database: 0
         host: 118.195.179.140
         port: 6379
-        jedis:
-            pool:
-                max-active: 8
-                max-idle: 8
-                min-idle: 0
-        timeout: 10000
-
 mybatis:
     mapperLocations: classpath*:mapper/**/*Mapper.xml
     configuration:
