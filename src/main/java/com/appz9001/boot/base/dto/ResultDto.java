@@ -28,16 +28,16 @@ public class ResultDto<T> implements Serializable {
 		this.message = message;
 	}
 
-	public static ResultDto<String> error(String errorCode, String errorMsg) {
-		ResultDto<String> dto = new ResultDto<>();
+	public static ResultDto<?> error(String errorCode, String errorMsg) {
+		ResultDto<?> dto = new ResultDto<>();
 		dto.setCode(errorCode);
 		dto.setMessage(errorMsg);
 		return dto;
 	}
 	
-	public static ResultDto<String> success(String errorMsg) {
-		ResultDto<String> dto = new ResultDto<>();
-		dto.setMessage(errorMsg);
+	public static <T> ResultDto<T> success(T data) {
+		ResultDto<T> dto = new ResultDto<>();
+		dto.setData(data);
 		return dto;
 	}
 

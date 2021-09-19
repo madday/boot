@@ -1,5 +1,6 @@
 package com.appz9001.boot.oauth.config;
 
+import com.appz9001.boot.oauth.service.AuthExceptionEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +22,8 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
 public class ResourceConfig extends ResourceServerConfigurerAdapter {
     @Autowired
     private RedisConnectionFactory redisConnectionFactory;
+    @Autowired
+    private AuthExceptionEntryPoint authExceptionEntryPoint;
 
     @Value("${spring.security.oauth2.client.client-id}")
     private String clientId;
@@ -43,10 +46,10 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/**").authenticated();
     }
 
-//    @Override
-//    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-//        resources.tokenServices(tokenService());
-//    }
+    @Override
+    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+        resources.authenticationEntryPoint(authExceptionEntryPoint);
+    }
 //
 //    @Bean
 //    public RemoteTokenServices tokenService() {

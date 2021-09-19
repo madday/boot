@@ -29,7 +29,7 @@ public class ExceptionBaseHandler {
 
 	@ExceptionHandler(value = BizException.class)
 	@ResponseBody
-	public ResultDto<String> bizExceptionHandler(HttpServletRequest req, BizException e) {
+	public ResultDto<?> bizExceptionHandler(HttpServletRequest req, BizException e) {
 		logger.error("业务异常:{}", e.getErrorMsg());
 		return ResultDto.error(e.getErrorCode(), e.getErrorMsg());
 	}

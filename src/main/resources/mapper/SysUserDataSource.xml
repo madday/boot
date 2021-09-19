@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.appz9001.boot.mapper.SysDataSourceMapper">
+    <resultMap id="BaseResultMap" type="com.appz9001.boot.domain.SysDataSource">
+        <id column="ds_id" jdbcType="VARCHAR" property="dsId" />
+        <result column="ds_ip" jdbcType="VARCHAR" property="dsIp" />
+        <result column="ds_port" jdbcType="VARCHAR" property="dsPort" />
+        <result column="ds_url" jdbcType="VARCHAR" property="dsUrl" />
+        <result column="ds_user" jdbcType="VARCHAR" property="dsUser" />
+        <result column="ds_password" jdbcType="VARCHAR" property="dsPassword" />
+        <result column="ds_type" jdbcType="VARCHAR" property="dsType" />
+        <result column="ds_driver" jdbcType="VARCHAR" property="dsDriver" />
+        <result column="ds_note" jdbcType="VARCHAR" property="dsNote" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        ds_id,ds_ip,ds_port,ds_url,ds_user,ds_password,ds_type,ds_driver,ds_note
+    </sql>
+</mapper>

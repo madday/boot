@@ -21,15 +21,71 @@ public class SysDataSource implements Serializable{
 	@Column(name = "ds_url")
 	private String dsUrl;
 
+	@Column(name = "ds_ip")
+	private String dsIp;
+
+	@Column(name = "ds_port")
+	private String dsPort;
+
 	@Column(name = "ds_user")
-	private String ds_user;
+	private String dsUser;
 
 	@Column(name = "ds_password")
-	private String ds_password;
+	private String dsPassword;
 
 	@Column(name = "ds_driver")
-	private String ds_driver;
+	private String dsDriver;
 
+	@Column(name = "ds_note")
+	private String dsNote;
+
+	public String getDsUser() {
+		return dsUser;
+	}
+
+	public void setDsUser(String dsUser) {
+		this.dsUser = dsUser;
+	}
+
+	public String getDsPassword() {
+		return dsPassword;
+	}
+
+	public void setDsPassword(String dsPassword) {
+		this.dsPassword = dsPassword;
+	}
+
+	public String getDsDriver() {
+		return dsDriver;
+	}
+
+	public void setDsDriver(String dsDriver) {
+		this.dsDriver = dsDriver;
+	}
+
+	public String getDsId() {
+		return dsId;
+	}
+
+	public void setDsId(String dsId) {
+		this.dsId = dsId;
+	}
+
+	public String getDsIp() {
+		return dsIp;
+	}
+
+	public void setDsIp(String dsIp) {
+		this.dsIp = dsIp;
+	}
+
+	public String getDsPort() {
+		return dsPort;
+	}
+
+	public void setDsPort(String dsPort) {
+		this.dsPort = dsPort;
+	}
 
 	public String getDsUrl() {
 		return dsUrl;
@@ -39,27 +95,11 @@ public class SysDataSource implements Serializable{
 		this.dsUrl = dsUrl;
 	}
 
-	public String getDs_user() {
-		return ds_user;
+	public String getDsNote() {
+		return dsNote;
 	}
 
-	public void setDs_user(String ds_user) {
-		this.ds_user = ds_user;
-	}
-
-	public String getDs_password() {
-		return ds_password;
-	}
-
-	public void setDs_password(String ds_password) {
-		this.ds_password = ds_password;
-	}
-
-	public String getDs_driver() {
-		return ds_driver;
-	}
-
-	public void setDs_driver(String ds_driver) {
-		this.ds_driver = ds_driver;
+	public void setDsNote(String dsNote) {
+		this.dsNote = dsNote;
 	}
 }

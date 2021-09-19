@@ -14,12 +14,12 @@ public class DataSoureService {
     private SysDataSourceService sysDataSourceService;
 
     public DataSource getDataSource(String dsId){
-        SysDataSource sysDataSource = sysDataSourceService.getSysDataSource();
+        SysDataSource sysDataSource = sysDataSourceService.getSysDataSource(dsId);
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setJdbcUrl(sysDataSource.getDsUrl());
-        dataSource.setUsername(sysDataSource.getDs_user());
-        dataSource.setPassword(sysDataSource.getDs_password());
-        dataSource.setDriverClassName(sysDataSource.getDs_driver());
+        dataSource.setUsername(sysDataSource.getDsUser());
+        dataSource.setPassword(sysDataSource.getDsPassword());
+        dataSource.setDriverClassName(sysDataSource.getDsDriver());
         return dataSource;
     }
 }
