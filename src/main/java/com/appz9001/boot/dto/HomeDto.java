@@ -10,6 +10,8 @@ public class HomeDto {
     private List<String> weekList;
     private WeekRateDto weekRateDto;
 
+    private String hotelName;
+
     public RoomSumInfo getRoomSumInfo() {
         return roomSumInfo;
     }
@@ -66,5 +68,13 @@ public class HomeDto {
 
     public void setWeekRateDto(WeekRateDto weekRateDto) {
         this.weekRateDto = weekRateDto;
+    }
+
+    public String getHotelName() {
+        return hotelName;
+    }
+
+    public void setHotelName(String hotelName) {
+        this.hotelName = hotelName;
     }
 }

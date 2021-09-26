@@ -3,8 +3,10 @@ package com.appz9001.boot.service;
 import com.alibaba.fastjson.JSON;
 import com.appz9001.boot.base.DynamicDataSource;
 import com.appz9001.boot.base.dto.BaseRequest;
+import com.appz9001.boot.domain.SysUser;
 import com.appz9001.boot.dto.*;
 import com.appz9001.boot.mapper.AppRoomMapper;
+import com.appz9001.boot.mapper.SysUserMapper;
 import com.appz9001.boot.util.DateUtil;
 import com.appz9001.boot.util.UserUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -31,10 +33,16 @@ public class AppRoomService {
     private DataSoureService dataSourceService;
     @Autowired
     private AppRoomMapper appRoomMapper;
+    @Autowired
+    private SysUserMapper sysUserMapper;
 
     public HomeDto queryIncome(String userId){
         HomeDto homeDto = new HomeDto();
         try{
+            // 酒店名称
+            SysUser sysUser = (SysUser)sysUserMapper.selectByPrimaryKey(userId);
+            homeDto.setHotelName(sysUser.getHotelName());
+
             DataSource dataSource = dataSourceService.getDataSource(userId);
             DynamicDataSource.dataSourcesMap.put(userId, dataSource);
             DynamicDataSource.setDataSource(userId);

@@ -25,9 +25,13 @@ public class SysUserController {
 	@PostMapping("/add")
 	public ResultDto<Integer> add(@RequestBody SysUser sysUser) {
 		ResultDto<Integer> resultDto = new ResultDto<Integer>();
-		int result = sysUserService.insert(sysUser);
-		resultDto.setData(result);
-		return resultDto;
+		return sysUserService.insert(sysUser);
+	}
+
+	@PostMapping("/update")
+	public ResultDto<Integer> update(@RequestBody SysUser sysUser) {
+		ResultDto<Integer> resultDto = new ResultDto<Integer>();
+		return sysUserService.updateUser(sysUser);
 	}
 
 	@GetMapping("/delete")

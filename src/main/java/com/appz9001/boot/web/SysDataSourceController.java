@@ -27,6 +27,12 @@ public class SysDataSourceController {
 		return sysDataSourceService.addDataSource(sysDataSource);
 	}
 
+	@PostMapping("/update")
+	public ResultDto<Integer> update(@RequestBody SysDataSource sysDataSource) {
+		ResultDto<Integer> resultDto = new ResultDto<Integer>();
+		return sysDataSourceService.updateDataSource(sysDataSource);
+	}
+
 	@GetMapping("/delete")
 	public ResultDto<Integer> add(String dsId) {
 		ResultDto<Integer> resultDto = new ResultDto<Integer>();

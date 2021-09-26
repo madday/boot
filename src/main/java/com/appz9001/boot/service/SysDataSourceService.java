@@ -41,4 +41,10 @@ public class SysDataSourceService {
 	public List<SysDataSource> selectAll(){
 		return this.sysDataSourceMapper.selectAll();
 	}
+
+    public ResultDto<Integer> updateDataSource(SysDataSource sysDataSource) {
+		sysDataSource.setDsUrl(SysConstant.SQL_SERVER_URL_PREFIX+sysDataSource.getDsIp()+SysConstant.SQL_SERVER_URL_SUFFIX);
+		int result = this.sysDataSourceMapper.updateByPrimaryKeySelective(sysDataSource);
+		return ResultDto.success(result);
+    }
 }

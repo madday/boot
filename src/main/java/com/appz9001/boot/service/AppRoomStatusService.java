@@ -72,15 +72,15 @@ public class AppRoomStatusService {
                         }
                     }
                     // 住脏
-                    else if("4".equals(request.getSort())){
+                    else if("5".equals(request.getSort())){
                         if(StringUtils.isNotBlank(roomInfoDto.getHousingSort())){
                             if("1".equals(roomInfoDto.getClearStatus())){
                                 retList.add(roomInfoDto);
                             }
                         }
                     }
-                    // 空净
-                    else if("5".equals(request.getSort())){
+                    // 住净
+                    else if("4".equals(request.getSort())){
                         if(StringUtils.isNotBlank(roomInfoDto.getHousingSort())){
                             if("0".equals(roomInfoDto.getClearStatus())){
                                 retList.add(roomInfoDto);

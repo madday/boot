@@ -30,6 +30,9 @@ public class MyUserDetailServiceImpl implements UserDetailsService {
         SysUser sysUser = sysUserService.getUserByCode(username);
         logger.info("登录密码:{}", sysUser.getPassword());
         String password = passwordEncoder.encode(sysUser.getPassword());
+        if(!"1".equals(sysUser.getStas())){
+            throw new UsernameNotFoundException("用户状态不正常");
+        }
         List<GrantedAuthority> authorityList = new ArrayList<>();
         return new User(username,password, AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN"));
     }

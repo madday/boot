@@ -21,11 +21,18 @@ public class SysUserService {
 	private SysUserMapper sysUserMapper;
 	private static final Logger logger = LoggerFactory.getLogger(SysUserService.class);
 	
-	public Integer insert(SysUser domain) {
+	public ResultDto<Integer> insert(SysUser domain) {
+		ResultDto<Integer> resultDto = new ResultDto<>();
+		SysUser sysUser = (SysUser) this.sysUserMapper.selectByPrimaryKey(domain.getUserCode());
+		if(sysUser != null){
+			resultDto.setCode("9");
+			resultDto.setMessage("该账号已存在");
+			return resultDto;
+		}
 		domain.setDsId(domain.getUserCode());
-		// 有效
-		domain.setStas("1");
-		return this.sysUserMapper.insert(domain);
+		int result =  this.sysUserMapper.insert(domain);
+		resultDto.setData(result);
+		return resultDto;
 	}
 
 	public List userAll() throws Exception{
@@ -75,5 +82,10 @@ public class SysUserService {
 		int result = this.sysUserMapper.updateByPrimaryKey(sysUser);
 		resultDto.setData(result);
 		return resultDto;
+	}
+
+	public ResultDto<Integer> updateUser(SysUser sysUser) {
+		int result = this.sysUserMapper.updateByPrimaryKeySelective(sysUser);
+		return ResultDto.success(result);
 	}
 }

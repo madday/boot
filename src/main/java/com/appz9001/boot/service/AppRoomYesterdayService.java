@@ -193,6 +193,12 @@ public class AppRoomYesterdayService {
      * @return
      */
     private List<BillInfoDto> dealBillList(List<BillInfoDto> billInfoDtoList) {
+        // 处理END字段,_START + _OCCUR + _ADJUST - _SETTLE = _END
+        for(BillInfoDto billInfoDto:billInfoDtoList){
+            billInfoDto.setEnd(billInfoDto.getStart().add(billInfoDto.getOccu()
+                    .add(billInfoDto.getAdjust())
+                    .subtract(billInfoDto.getSettle())));
+        }
         // 处理完返回的数据
         List<BillInfoDto> retList = new ArrayList<>();
         // sort->[dep1,dep2]

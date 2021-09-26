@@ -16,9 +16,9 @@ spring:
                 check-token-access: http://localhost:8090/oauth/check_token
     redis:
         database: 0
-        host: 118.195.179.140
+        host: 110.42.233.64
         port: 6379
-        password: appz9001.abc
+        password: foobared.xyz
 mybatis:
     mapperLocations: classpath*:mapper/**/*Mapper.xml
     configuration:
