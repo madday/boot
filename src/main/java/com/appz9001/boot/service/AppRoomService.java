@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
@@ -27,6 +28,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class AppRoomService {
     private static final Logger logger = LoggerFactory.getLogger(AppRoomService.class);
     @Autowired
@@ -81,6 +83,13 @@ public class AppRoomService {
 
     private CheckInfoDto buildCheckInfo() {
        CheckInfoDto checkInfoDto =  this.appRoomMapper.queryCheckInfo();
+       if(checkInfoDto == null){
+           checkInfoDto = new CheckInfoDto();
+           checkInfoDto.setCheckIn(new BigDecimal("0"));
+           checkInfoDto.setCheckOut(new BigDecimal("0"));
+           checkInfoDto.setCheckInAll(new BigDecimal("0"));
+           checkInfoDto.setCheckInPre(new BigDecimal("0"));
+       }
        return checkInfoDto;
     }
 

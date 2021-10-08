@@ -1,40 +1,42 @@
 package com.appz9001.boot.dto;
 
-public class CheckInfoDto {
-    private String checkIn;
-    private String checkOut;
-    private String checkInAll;
-    private String checkInPre;
+import java.math.BigDecimal;
 
-    public String getCheckIn() {
+public class CheckInfoDto {
+    private BigDecimal checkIn;
+    private BigDecimal checkOut;
+    private BigDecimal checkInAll;
+    private BigDecimal checkInPre;
+
+    public BigDecimal getCheckIn() {
         return checkIn;
     }
 
-    public void setCheckIn(String checkIn) {
+    public void setCheckIn(BigDecimal checkIn) {
         this.checkIn = checkIn;
     }
 
-    public String getCheckOut() {
+    public BigDecimal getCheckOut() {
         return checkOut;
     }
 
-    public void setCheckOut(String checkOut) {
+    public void setCheckOut(BigDecimal checkOut) {
         this.checkOut = checkOut;
     }
 
-    public String getCheckInAll() {
+    public BigDecimal getCheckInAll() {
         return checkInAll;
     }
 
-    public void setCheckInAll(String checkInAll) {
+    public void setCheckInAll(BigDecimal checkInAll) {
         this.checkInAll = checkInAll;
     }
 
-    public String getCheckInPre() {
+    public BigDecimal getCheckInPre() {
         return checkInPre;
     }
 
-    public void setCheckInPre(String checkInPre) {
+    public void setCheckInPre(BigDecimal checkInPre) {
         this.checkInPre = checkInPre;
     }
 }

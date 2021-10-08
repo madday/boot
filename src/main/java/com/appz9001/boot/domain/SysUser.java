@@ -44,6 +44,9 @@ public class SysUser implements Serializable{
 	@Column(name = "end_date")
 	private String endDate;
 
+	@Column(name = "ext1")
+	private String ext1;
+
 	@Transient
 	private String stasName;
 
@@ -133,5 +136,13 @@ public class SysUser implements Serializable{
 
 	public void setStartDate(String startDate) {
 		this.startDate = startDate;
+	}
+
+	public String getExt1() {
+		return ext1;
+	}
+
+	public void setExt1(String ext1) {
+		this.ext1 = ext1;
 	}
 }

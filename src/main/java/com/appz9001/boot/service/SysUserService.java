@@ -11,11 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.appz9001.boot.mapper.SysUserMapper;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Connection;
 import java.util.List;
 
 @Service
+@Transactional
 public class SysUserService {
 	@Autowired
 	private SysUserMapper sysUserMapper;
