@@ -28,7 +28,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class AppRoomService {
     private static final Logger logger = LoggerFactory.getLogger(AppRoomService.class);
     @Autowired
@@ -44,9 +43,8 @@ public class AppRoomService {
             // 酒店名称
             SysUser sysUser = (SysUser)sysUserMapper.selectByPrimaryKey(userId);
             homeDto.setHotelName(sysUser.getHotelName());
-
             DataSource dataSource = dataSourceService.getDataSource(userId);
-            DynamicDataSource.dataSourcesMap.put(userId, dataSource);
+//            DynamicDataSource.dataSourcesMap.put(userId, dataSource);
             DynamicDataSource.setDataSource(userId);
             String date = appRoomMapper.querySysDate();
             String yesterday = appRoomMapper.querySysDateBefore();
@@ -200,7 +198,7 @@ public class AppRoomService {
         WeekRateDto weekRateDto = new WeekRateDto();
         try{
             DataSource dataSource = dataSourceService.getDataSource(userId);
-            DynamicDataSource.dataSourcesMap.put(userId, dataSource);
+//            DynamicDataSource.dataSourcesMap.put(userId, dataSource);
             DynamicDataSource.setDataSource(userId);
             weekRateDto = this.buildWeekRentRate();
         }

@@ -18,7 +18,6 @@ import java.math.BigDecimal;
 import java.util.*;
 
 @Service
-@Transactional
 public class AppRoomAccountService {
     private static final Logger logger = LoggerFactory.getLogger(AppRoomAccountService.class);
     @Autowired
@@ -33,7 +32,7 @@ public class AppRoomAccountService {
         Map<String,List<RoomAccountDto>> sortMap = new TreeMap<>();
         try{
             DataSource dataSource = dataSourceService.getDataSource(userId);
-            DynamicDataSource.dataSourcesMap.put(userId, dataSource);
+//            DynamicDataSource.dataSourcesMap.put(userId, dataSource);
             DynamicDataSource.setDataSource(userId);
             List<RoomAccountDto> roomAccountList = this.appRoomMapper.queryRoomAccount();
             RoomAccountDto accountSum = new RoomAccountDto();

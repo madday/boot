@@ -33,7 +33,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class AppRoomYesterdayService {
     private static final Logger logger = LoggerFactory.getLogger(AppRoomYesterdayService.class);
     @Autowired
@@ -50,7 +49,7 @@ public class AppRoomYesterdayService {
         String sdate = request.getSdate();
         try{
             DataSource dataSource = dataSourceService.getDataSource(userId);
-            DynamicDataSource.dataSourcesMap.put(userId, dataSource);
+//            DynamicDataSource.dataSourcesMap.put(userId, dataSource);
             DynamicDataSource.setDataSource(userId);
 
             String yesDate = appRoomMapper.querySysDateBefore();

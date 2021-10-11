@@ -26,7 +26,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class AppRoomStatusService {
     private static final Logger logger = LoggerFactory.getLogger(AppRoomStatusService.class);
     @Autowired
@@ -41,7 +40,7 @@ public class AppRoomStatusService {
         String userId = user.getUsername();
         try{
             DataSource dataSource = dataSourceService.getDataSource(userId);
-            DynamicDataSource.dataSourcesMap.put(userId, dataSource);
+//            DynamicDataSource.dataSourcesMap.put(userId, dataSource);
             DynamicDataSource.setDataSource(userId);
             List<RoomInfoDto> roomList = appRoomMapper.queryRoomInfo();
             List<RoomInfoDto> retList = new ArrayList<>();
