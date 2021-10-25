@@ -29,32 +29,34 @@ public class DataSoureService {
 
     private static final Logger logger = LoggerFactory.getLogger(DataSoureService.class);
 
-    public synchronized DataSource getDataSource(String dsId){
+    public DataSource getDataSource(String dsId){
         SysDataSource sysDataSource = sysDataSourceService.getSysDataSource(dsId);
-        boolean exists = DynamicDataSource.containsDataSource(dsId);
-        if(exists){
-            logger.info("存量数据源信息：{}", DynamicDataSource.dataSourcesMap);
-            HikariDataSource dataSource = (HikariDataSource)DynamicDataSource.dataSourcesMap.get(dsId);
-            logger.info(dataSource.getIdleTimeout()+":time out");
-            logger.info(dataSource.getMaxLifetime()+":life time");
+        synchronized(dsId.intern()){
+            boolean exists = DynamicDataSource.containsDataSource(dsId);
+            if(exists){
+                logger.info("存量数据源信息：{}", DynamicDataSource.dataSourcesMap);
+                HikariDataSource dataSource = (HikariDataSource)DynamicDataSource.dataSourcesMap.get(dsId);
+                logger.info(dataSource.getIdleTimeout()+":time out");
+                logger.info(dataSource.getMaxLifetime()+":life time");
+                return dataSource;
+            }
+            HikariConfig config = new HikariConfig();
+            config.setPoolName(dsId);
+            config.setJdbcUrl(sysDataSource.getDsUrl());
+            config.setUsername(sysDataSource.getDsUser());
+            config.setPassword(sysDataSource.getDsPassword());
+            config.setDriverClassName(sysDataSource.getDsDriver());
+            config.setConnectionTestQuery("select 1");
+            config.setMinimumIdle(1);
+            config.setMaximumPoolSize(5);
+            config.setIdleTimeout(120000);
+            config.setMaxLifetime(180000);
+            // 连接超时90秒
+            config.setConnectionTimeout(60000);
+            HikariDataSource dataSource = new HikariDataSource(config);
+            DynamicDataSource.dataSourcesMap.put(dsId,dataSource);
+            logger.info("新增数据源信息：{}", dataSource.toString());
             return dataSource;
         }
-        HikariConfig config = new HikariConfig();
-        config.setPoolName(dsId);
-        config.setJdbcUrl(sysDataSource.getDsUrl());
-        config.setUsername(sysDataSource.getDsUser());
-        config.setPassword(sysDataSource.getDsPassword());
-        config.setDriverClassName(sysDataSource.getDsDriver());
-        config.setConnectionTestQuery("select 1");
-        config.setMinimumIdle(1);
-        config.setMaximumPoolSize(5);
-        config.setIdleTimeout(120000);
-        config.setMaxLifetime(180000);
-        // 连接超时90秒
-        config.setConnectionTimeout(60000);
-        HikariDataSource dataSource = new HikariDataSource(config);
-        DynamicDataSource.dataSourcesMap.put(dsId,dataSource);
-        logger.info("新增数据源信息：{}", dataSource.toString());
-        return dataSource;
     }
 }

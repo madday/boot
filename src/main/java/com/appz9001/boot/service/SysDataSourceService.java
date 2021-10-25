@@ -5,13 +5,16 @@ import com.appz9001.boot.base.constant.SysConstant;
 import com.appz9001.boot.base.dto.ResultDto;
 import com.appz9001.boot.domain.SysDataSource;
 import com.appz9001.boot.mapper.SysDataSourceMapper;
+import com.appz9001.boot.util.DBUtil;
 import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.client.test.TestAccounts;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Connection;
 import java.util.List;
 
 
@@ -34,8 +37,17 @@ public class SysDataSourceService {
 		}
 		sysDataSource.setDsDriver(SysConstant.SQL_SERVER_DRIVER);
 		sysDataSource.setDsUrl(SysConstant.SQL_SERVER_URL_PREFIX+sysDataSource.getDsIp()+SysConstant.SQL_SERVER_URL_SUFFIX);
-		int result = this.sysDataSourceMapper.insertSelective(sysDataSource);
-		return ResultDto.success(result);
+		boolean flag = testDataSource(sysDataSource);
+		if(flag){
+			int result = this.sysDataSourceMapper.insertSelective(sysDataSource);
+			return ResultDto.success(result);
+		}
+		else{
+			ResultDto<Integer> resultDto = new ResultDto<>();
+			resultDto.setCode("9");
+			resultDto.setMessage("数据源连接失败");
+			return resultDto;
+		}
 	}
 
 	public int deleteDataSource(String dsId){
@@ -50,11 +62,33 @@ public class SysDataSourceService {
 
     public ResultDto<Integer> updateDataSource(SysDataSource sysDataSource) {
 		sysDataSource.setDsUrl(SysConstant.SQL_SERVER_URL_PREFIX+sysDataSource.getDsIp()+SysConstant.SQL_SERVER_URL_SUFFIX);
-		int result = this.sysDataSourceMapper.updateByPrimaryKeySelective(sysDataSource);
-		clearDateSource(sysDataSource.getDsId());
-		return ResultDto.success(result);
+		boolean flag = testDataSource(sysDataSource);
+		if(flag){
+			clearDateSource(sysDataSource.getDsId());
+			int result = this.sysDataSourceMapper.updateByPrimaryKeySelective(sysDataSource);
+			return ResultDto.success(result);
+		}
+		else{
+			ResultDto<Integer> resultDto = new ResultDto<>();
+			resultDto.setCode("9");
+			resultDto.setMessage("数据源连接失败");
+			return resultDto;
+		}
     }
 
+    private boolean testDataSource(SysDataSource sysDataSource){
+//		try{
+//			Connection conn = DBUtil.getConnection(sysDataSource.getDsUrl(),sysDataSource.getDsUser(),sysDataSource.getDsPassword());
+//			if(conn == null){
+//				return false;
+//			}
+//		}
+//		catch(Exception e){
+//			e.printStackTrace();
+//			return false;
+//		}
+		return true;
+	}
 
     private void clearDateSource(String userId){
 		boolean exists = DynamicDataSource.containsDataSource(userId);

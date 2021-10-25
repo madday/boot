@@ -14,8 +14,6 @@ public class DBUtil {
 
     public static Connection getConnection(String url,String user,String password){
         Connection conn = null;
-        String sql = "select * from sys_user";
-            // 连接数据库
         try {
             return DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
